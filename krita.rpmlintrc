@@ -1,0 +1,4 @@
+# Krita's single-application-libraries are more like plugins than
+# like libraries...
+addFilter("E: devel-file-in-non-devel-package")
+addFilter("E: executable-in-library-package")
