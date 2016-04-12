@@ -13,6 +13,10 @@ License: GPL
 Group: Graphics
 BuildRequires: cmake
 BuildRequires: ninja
+BuildRequires: cmake(Qt5Core)
+BuildRequires: cmake(Qt5Gui)
+BuildRequires: cmake(Qt5Network)
+BuildRequires: cmake(Qt5Widgets)
 BuildRequires: cmake(ECM)
 BuildRequires: cmake(KF5Archive)
 BuildRequires: cmake(KF5Config)
