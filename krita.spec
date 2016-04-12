@@ -13,6 +13,7 @@ License: GPL
 Group: Graphics
 BuildRequires: cmake
 BuildRequires: ninja
+BuildRequires: cmake(ECM)
 BuildRequires: cmake(KF5Archive)
 BuildRequires: cmake(KF5Config)
 BuildRequires: cmake(KF5WidgetsAddons)
