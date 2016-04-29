@@ -1,0 +1,479 @@
+--- krita-2.99.90/benchmarks/CMakeLists.txt.vc12	2016-04-22 21:41:14.000000000 +0200
++++ krita-2.99.90/benchmarks/CMakeLists.txt	2016-04-29 13:35:36.596427697 +0200
+@@ -72,4 +72,7 @@ target_link_libraries(KisGradientBenchma
+ target_link_libraries(KisLowMemoryBenchmark  kritaimage  Qt5::Test)
+ target_link_libraries(KisFilterSelectionsBenchmark   kritaimage  Qt5::Test)
+ target_link_libraries(KisCompositionBenchmark  kritaimage  Qt5::Test ${LINK_VC_LIB})
++if(HAVE_VC)
++    set_property(TARGET KisCompositionBenchmark APPEND PROPERTY COMPILE_OPTIONS "${Vc_ARCHITECTURE_FLAGS}")
++endif()
+ target_link_libraries(KisMaskGeneratorBenchmark  kritaimage  Qt5::Test)
+--- krita-2.99.90/benchmarks/kis_composition_benchmark.cpp.vc12	2016-04-22 21:41:14.000000000 +0200
++++ krita-2.99.90/benchmarks/kis_composition_benchmark.cpp	2016-04-29 13:37:57.160921690 +0200
+@@ -499,7 +499,7 @@ void checkRounding(qreal opacity, qreal
+     // The error count is needed as 38.5 gets rounded to 38 instead of 39 in the vc version.
+     int errorcount = 0;
+     for (int i = 0; i < numBlocks; i++) {
+-        Compositor::template compositeVector<true,true, VC_IMPL>(src1, dst1, msk1, params.opacity, optionalParams);
++        Compositor::template compositeVector<true,true, Vc::CurrentImplementation::current()>(src1, dst1, msk1, params.opacity, optionalParams);
+         for (int j = 0; j < vecSize; j++) {
+ 
+             //if (8 * i + j == 7080) {
+@@ -508,7 +508,7 @@ void checkRounding(qreal opacity, qreal
+             //    dbgKrita << "msk:" << msk2[0];
+             //}
+ 
+-            Compositor::template compositeOnePixelScalar<true, VC_IMPL>(src2, dst2, msk2, params.opacity, optionalParams);
++            Compositor::template compositeOnePixelScalar<true, Vc::CurrentImplementation::current()>(src2, dst2, msk2, params.opacity, optionalParams);
+ 
+             bool compareResult = true;
+             if (pixelSize == 4) {
+@@ -819,6 +819,8 @@ void KisCompositionBenchmark::benchmarkM
+ void KisCompositionBenchmark::benchmarkUintFloat()
+ {
+ #ifdef HAVE_VC
++    using uint_v = Vc::SimdArray<unsigned int, Vc::float_v::size()>;
++
+     const int dataSize = 4096;
+     void *ptr = 0;
+     int error = MEMALIGN_ALLOC(&ptr, uint8VecAlignment, dataSize);
+@@ -836,7 +838,7 @@ void KisCompositionBenchmark::benchmarkU
+         for (int i = 0; i < dataSize; i += Vc::float_v::Size) {
+             // convert uint -> float directly, this causes
+             // static_cast helper be called
+-            Vc::float_v b(Vc::uint_v(iData + i));
++            Vc::float_v b(uint_v(iData + i));
+             b.store(fData + i);
+         }
+     }
+@@ -849,6 +851,9 @@ void KisCompositionBenchmark::benchmarkU
+ void KisCompositionBenchmark::benchmarkUintIntFloat()
+ {
+ #ifdef HAVE_VC
++    using int_v = Vc::SimdArray<int, Vc::float_v::size()>;
++    using uint_v = Vc::SimdArray<unsigned int, Vc::float_v::size()>;
++
+     const int dataSize = 4096;
+     void *ptr = 0;
+     int error = MEMALIGN_ALLOC(&ptr, uint8VecAlignment, dataSize);
+@@ -866,7 +871,7 @@ void KisCompositionBenchmark::benchmarkU
+         for (int i = 0; i < dataSize; i += Vc::float_v::Size) {
+             // convert uint->int->float, that avoids special sign
+             // treating, and gives 2.6 times speedup
+-            Vc::float_v b(Vc::int_v(Vc::uint_v(iData + i)));
++            Vc::float_v b(int_v(uint_v(iData + i)));
+             b.store(fData + i);
+         }
+     }
+@@ -879,6 +884,8 @@ void KisCompositionBenchmark::benchmarkU
+ void KisCompositionBenchmark::benchmarkFloatUint()
+ {
+ #ifdef HAVE_VC
++    using uint_v = Vc::SimdArray<unsigned int, Vc::float_v::size()>;
++
+     const int dataSize = 4096;
+     void *ptr = 0;
+     int error = MEMALIGN_ALLOC(&ptr, uint32VecAlignment, dataSize * sizeof(quint32));
+@@ -895,7 +902,7 @@ void KisCompositionBenchmark::benchmarkF
+     QBENCHMARK {
+         for (int i = 0; i < dataSize; i += Vc::float_v::Size) {
+             // conversion float -> uint
+-            Vc::uint_v b(Vc::float_v(fData + i));
++            uint_v b(Vc::float_v(fData + i));
+ 
+             b.store(iData + i);
+         }
+@@ -909,6 +916,9 @@ void KisCompositionBenchmark::benchmarkF
+ void KisCompositionBenchmark::benchmarkFloatIntUint()
+ {
+ #ifdef HAVE_VC
++    using int_v = Vc::SimdArray<int, Vc::float_v::size()>;
++    using uint_v = Vc::SimdArray<unsigned int, Vc::float_v::size()>;
++
+     const int dataSize = 4096;
+     void *ptr = 0;
+     int error = MEMALIGN_ALLOC(&ptr, uint32VecAlignment, dataSize * sizeof(quint32));
+@@ -925,7 +935,7 @@ void KisCompositionBenchmark::benchmarkF
+     QBENCHMARK {
+         for (int i = 0; i < dataSize; i += Vc::float_v::Size) {
+             // conversion float -> int -> uint
+-            Vc::uint_v b(Vc::int_v(Vc::float_v(fData + i)));
++            uint_v b(int_v(Vc::float_v(fData + i)));
+ 
+             b.store(iData + i);
+         }
+--- krita-2.99.90/CMakeLists.txt.vc12	2016-04-22 21:41:14.000000000 +0200
++++ krita-2.99.90/CMakeLists.txt	2016-04-29 13:35:36.595427701 +0200
+@@ -486,7 +486,7 @@ endif()
+ ##
+ set(OLD_CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} )
+ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
+-macro_optional_find_package(Vc 0.6.70)
++macro_optional_find_package(Vc 1.0.0)
+ macro_log_feature(Vc_FOUND "Vc" "Portable, zero-overhead SIMD library for C++" "https://github.com/VcDevel/Vc" FALSE "" "Required by the Krita for vectorization")
+ macro_bool_to_01(Vc_FOUND HAVE_VC)
+ macro_bool_to_01(PACKAGERS_BUILD DO_PACKAGERS_BUILD)
+@@ -507,48 +507,28 @@ if(HAVE_VC)
+     endif()
+ 
+     #Handle Vc master
+-    if(Vc_VERSION_MAJOR GREATER 0 OR Vc_VERSION_MINOR GREATER 7)
+-        message(STATUS "Vc version is greater than 0.7, enabling AVX2 support")
+-
+-        if(Vc_COMPILER_IS_GCC OR Vc_COMPILER_IS_CLANG)
+-            AddCompilerFlag("-std=c++11" _ok)
+-            if(NOT _ok)
+-                AddCompilerFlag("-std=c++0x" _ok)
+-            endif()
+-        endif()
+-
+-        macro(ko_compile_for_all_implementations_no_scalar _objs _src)
+-        if(PACKAGERS_BUILD)
+-            vc_compile_for_all_implementations(${_objs} ${_src} FLAGS ${ADDITIONAL_VC_FLAGS} ONLY SSE2 SSSE3 SSE4_1 AVX AVX2)
+-        else()
+-            set(${_objs} ${_src})
++    if(Vc_COMPILER_IS_GCC OR Vc_COMPILER_IS_CLANG)
++        AddCompilerFlag("-std=c++11" _ok)
++        if(NOT _ok)
++            AddCompilerFlag("-std=c++0x" _ok)
+         endif()
+-        endmacro()
++    endif()
+ 
+-        macro(ko_compile_for_all_implementations _objs _src)
+-        if(PACKAGERS_BUILD)
+-            vc_compile_for_all_implementations(${_objs} ${_src} FLAGS ${ADDITIONAL_VC_FLAGS} ONLY Scalar SSE2 SSSE3 SSE4_1 AVX AVX2)
+-        else()
+-            set(${_objs} ${_src})
+-        endif()
+-        endmacro()
++    macro(ko_compile_for_all_implementations_no_scalar _objs _src)
++    if(PACKAGERS_BUILD)
++        vc_compile_for_all_implementations(${_objs} ${_src} FLAGS ${ADDITIONAL_VC_FLAGS} ONLY SSE2 SSSE3 SSE4_1 AVX AVX2+FMA+BMI2)
+     else()
+-        macro(ko_compile_for_all_implementations_no_scalar _objs _src)
+-        if(PACKAGERS_BUILD)
+-            vc_compile_for_all_implementations(${_objs} ${_src} FLAGS ${ADDITIONAL_VC_FLAGS} ONLY SSE2 SSSE3 SSE4_1 AVX)
+-        else()
+-            set(${_objs} ${_src})
+-        endif()
+-        endmacro()
++        set(${_objs} ${_src})
++    endif()
++    endmacro()
+ 
+-        macro(ko_compile_for_all_implementations _objs _src)
+-        if(PACKAGERS_BUILD)
+-            vc_compile_for_all_implementations(${_objs} ${_src} FLAGS ${ADDITIONAL_VC_FLAGS} ONLY Scalar SSE2 SSSE3 SSE4_1 AVX)
+-        else()
+-            set(${_objs} ${_src})
+-        endif()
+-        endmacro()
++    macro(ko_compile_for_all_implementations _objs _src)
++    if(PACKAGERS_BUILD)
++        vc_compile_for_all_implementations(${_objs} ${_src} FLAGS ${ADDITIONAL_VC_FLAGS} ONLY Scalar SSE2 SSSE3 SSE4_1 AVX AVX2+FMA+BMI2)
++    else()
++        set(${_objs} ${_src})
+     endif()
++    endmacro()
+ 
+     if (NOT PACKAGERS_BUILD)
+         # Optimize everything for the current architecture
+--- krita-2.99.90/libs/image/CMakeLists.txt.vc12	2016-04-22 21:41:15.000000000 +0200
++++ krita-2.99.90/libs/image/CMakeLists.txt	2016-04-29 13:35:36.598427690 +0200
+@@ -336,6 +336,9 @@ endif()
+ 
+ if(HAVE_VC)
+   target_link_libraries(kritaimage PUBLIC ${Vc_LIBRARIES})
++  if (NOT PACKAGERS_BUILD)
++      set_property(TARGET kritaimage APPEND PROPERTY COMPILE_OPTIONS "${Vc_ARCHITECTURE_FLAGS}")
++  endif()
+ endif()
+ 
+ if (NOT GSL_FOUND)
+--- krita-2.99.90/libs/image/kis_brush_mask_applicator_factories.cpp.vc12	2016-04-22 21:41:15.000000000 +0200
++++ krita-2.99.90/libs/image/kis_brush_mask_applicator_factories.cpp	2016-04-29 13:35:36.598427690 +0200
+@@ -29,17 +29,17 @@
+ template<>
+ template<>
+ MaskApplicatorFactory<KisMaskGenerator, KisBrushMaskScalarApplicator>::ReturnType
+-MaskApplicatorFactory<KisMaskGenerator, KisBrushMaskScalarApplicator>::create<VC_IMPL>(ParamType maskGenerator)
++MaskApplicatorFactory<KisMaskGenerator, KisBrushMaskScalarApplicator>::create<Vc::CurrentImplementation::current()>(ParamType maskGenerator)
+ {
+-    return new KisBrushMaskScalarApplicator<KisMaskGenerator,VC_IMPL>(maskGenerator);
++    return new KisBrushMaskScalarApplicator<KisMaskGenerator,Vc::CurrentImplementation::current()>(maskGenerator);
+ }
+ 
+ template<>
+ template<>
+ MaskApplicatorFactory<KisCircleMaskGenerator, KisBrushMaskVectorApplicator>::ReturnType
+-MaskApplicatorFactory<KisCircleMaskGenerator, KisBrushMaskVectorApplicator>::create<VC_IMPL>(ParamType maskGenerator)
++MaskApplicatorFactory<KisCircleMaskGenerator, KisBrushMaskVectorApplicator>::create<Vc::CurrentImplementation::current()>(ParamType maskGenerator)
+ {
+-    return new KisBrushMaskVectorApplicator<KisCircleMaskGenerator,VC_IMPL>(maskGenerator);
++    return new KisBrushMaskVectorApplicator<KisCircleMaskGenerator,Vc::CurrentImplementation::current()>(maskGenerator);
+ }
+ 
+ #if defined HAVE_VC
+@@ -57,7 +57,7 @@ struct KisCircleMaskGenerator::FastRowPr
+ };
+ 
+ template<> void KisCircleMaskGenerator::
+-FastRowProcessor::process<VC_IMPL>(float* buffer, int width, float y, float cosa, float sina,
++FastRowProcessor::process<Vc::CurrentImplementation::current()>(float* buffer, int width, float y, float cosa, float sina,
+                                    float centerX, float centerY)
+ {
+     const bool useSmoothing = d->copyOfAntialiasEdges;
+--- krita-2.99.90/libs/pigment/CMakeLists.txt.vc12	2016-04-22 21:41:15.000000000 +0200
++++ krita-2.99.90/libs/pigment/CMakeLists.txt	2016-04-29 13:35:36.598427690 +0200
+@@ -95,6 +95,9 @@ generate_export_header(kritapigment)
+ 
+ if (HAVE_VC)
+     target_link_libraries(kritapigment PUBLIC KF5::I18n KF5::ConfigCore)
++    if (NOT PACKAGERS_BUILD)
++        set_property(TARGET kritapigment APPEND PROPERTY COMPILE_OPTIONS "${Vc_ARCHITECTURE_FLAGS}")
++    endif()
+ endif()
+ 
+ target_include_directories( kritapigment
+--- krita-2.99.90/libs/pigment/compositeops/KoOptimizedCompositeOpFactoryPerArch.cpp.vc12	2016-04-22 21:41:15.000000000 +0200
++++ krita-2.99.90/libs/pigment/compositeops/KoOptimizedCompositeOpFactoryPerArch.cpp	2016-04-29 13:35:36.598427690 +0200
+@@ -39,33 +39,33 @@
+ template<>
+ template<>
+ KoOptimizedCompositeOpFactoryPerArch<KoOptimizedCompositeOpAlphaDarken32>::ReturnType
+-KoOptimizedCompositeOpFactoryPerArch<KoOptimizedCompositeOpAlphaDarken32>::create<VC_IMPL>(ParamType param)
++KoOptimizedCompositeOpFactoryPerArch<KoOptimizedCompositeOpAlphaDarken32>::create<Vc::CurrentImplementation::current()>(ParamType param)
+ {
+-    return new KoOptimizedCompositeOpAlphaDarken32<VC_IMPL>(param);
++    return new KoOptimizedCompositeOpAlphaDarken32<Vc::CurrentImplementation::current()>(param);
+ }
+ 
+ template<>
+ template<>
+ KoOptimizedCompositeOpFactoryPerArch<KoOptimizedCompositeOpOver32>::ReturnType
+-KoOptimizedCompositeOpFactoryPerArch<KoOptimizedCompositeOpOver32>::create<VC_IMPL>(ParamType param)
++KoOptimizedCompositeOpFactoryPerArch<KoOptimizedCompositeOpOver32>::create<Vc::CurrentImplementation::current()>(ParamType param)
+ {
+-    return new KoOptimizedCompositeOpOver32<VC_IMPL>(param);
++    return new KoOptimizedCompositeOpOver32<Vc::CurrentImplementation::current()>(param);
+ }
+ 
+ template<>
+ template<>
+ KoOptimizedCompositeOpFactoryPerArch<KoOptimizedCompositeOpAlphaDarken128>::ReturnType
+-KoOptimizedCompositeOpFactoryPerArch<KoOptimizedCompositeOpAlphaDarken128>::create<VC_IMPL>(ParamType param)
++KoOptimizedCompositeOpFactoryPerArch<KoOptimizedCompositeOpAlphaDarken128>::create<Vc::CurrentImplementation::current()>(ParamType param)
+ {
+-    return new KoOptimizedCompositeOpAlphaDarken128<VC_IMPL>(param);
++    return new KoOptimizedCompositeOpAlphaDarken128<Vc::CurrentImplementation::current()>(param);
+ }
+ 
+ template<>
+ template<>
+ KoOptimizedCompositeOpFactoryPerArch<KoOptimizedCompositeOpOver128>::ReturnType
+-KoOptimizedCompositeOpFactoryPerArch<KoOptimizedCompositeOpOver128>::create<VC_IMPL>(ParamType param)
++KoOptimizedCompositeOpFactoryPerArch<KoOptimizedCompositeOpOver128>::create<Vc::CurrentImplementation::current()>(ParamType param)
+ {
+-    return new KoOptimizedCompositeOpOver128<VC_IMPL>(param);
++    return new KoOptimizedCompositeOpOver128<Vc::CurrentImplementation::current()>(param);
+ }
+ 
+ #define __stringify(_s) #_s
+@@ -78,15 +78,13 @@ inline void printFeatureSupported(const
+ 
+ template<>
+ KoReportCurrentArch::ReturnType
+-KoReportCurrentArch::create<VC_IMPL>(ParamType)
++KoReportCurrentArch::create<Vc::CurrentImplementation::current()>(ParamType)
+ {
+-    dbgPigment << "Compiled for arch:" << stringify(VC_IMPL);
++    dbgPigment << "Compiled for arch:" << Vc::CurrentImplementation::current();
+     dbgPigment << "Features supported:";
+     printFeatureSupported("SSE2", Vc::SSE2Impl);
+     printFeatureSupported("SSSE3", Vc::SSSE3Impl);
+     printFeatureSupported("SSE4.1", Vc::SSE41Impl);
+     printFeatureSupported("AVX ", Vc::AVXImpl);
+-#if VC_VERSION_NUMBER >= VC_VERSION_CHECK(0, 8, 0)
+     printFeatureSupported("AVX2 ", Vc::AVX2Impl);
+-#endif
+ }
+--- krita-2.99.90/libs/pigment/compositeops/KoStreamedMath.h.vc12	2016-04-22 21:41:15.000000000 +0200
++++ krita-2.99.90/libs/pigment/compositeops/KoStreamedMath.h	2016-04-29 13:35:36.598427690 +0200
+@@ -45,6 +45,9 @@
+ template<Vc::Implementation _impl>
+ struct KoStreamedMath {
+ 
++using int_v = Vc::SimdArray<int, Vc::float_v::size()>;
++using uint_v = Vc::SimdArray<unsigned int, Vc::float_v::size()>;
++
+ /**
+  * Composes src into dst without using vector instructions
+  */
+@@ -112,8 +115,8 @@ static inline quint8 lerp_mixed_u8_float
+  * Each source mask element is considered to be a 8-bit integer
+  */
+ static inline Vc::float_v fetch_mask_8(const quint8 *data) {
+-    Vc::uint_v data_i(data);
+-    return Vc::float_v(Vc::int_v(data_i));
++    uint_v data_i(data);
++    return Vc::float_v(int_v(data_i));
+ }
+ 
+ /**
+@@ -130,14 +133,14 @@ static inline Vc::float_v fetch_mask_8(c
+  */
+ template <bool aligned>
+ static inline Vc::float_v fetch_alpha_32(const quint8 *data) {
+-    Vc::uint_v data_i;
++    uint_v data_i;
+     if (aligned) {
+         data_i.load((const quint32*)data, Vc::Aligned);
+     } else {
+         data_i.load((const quint32*)data, Vc::Unaligned);
+     }
+ 
+-    return Vc::float_v(Vc::int_v(data_i >> 24));
++    return Vc::float_v(int_v(data_i >> 24));
+ }
+ 
+ /**
+@@ -157,31 +160,7 @@ static inline void fetch_colors_32(const
+                             Vc::float_v &c1,
+                             Vc::float_v &c2,
+                             Vc::float_v &c3) {
+-    Vc::uint_v data_i;
+-    if (aligned) {
+-        data_i.load((const quint32*)data, Vc::Aligned);
+-    } else {
+-        data_i.load((const quint32*)data, Vc::Unaligned);
+-    }
+-
+-    const quint32 lowByteMask = 0xFF;
+-    Vc::uint_v mask(lowByteMask);
+-
+-    c1 = Vc::float_v(Vc::int_v((data_i >> 16) & mask));
+-    c2 = Vc::float_v(Vc::int_v((data_i >> 8)  & mask));
+-    c3 = Vc::float_v(Vc::int_v( data_i        & mask));
+-}
+-
+-/**
+- *
+- */
+-template <bool aligned>
+-static inline void fetch_all_32(const quint8 *data,
+-                            Vc::float_v &alpha,
+-                            Vc::float_v &c1,
+-                            Vc::float_v &c2,
+-                            Vc::float_v &c3) {
+-    Vc::uint_v data_i;
++    int_v data_i;
+     if (aligned) {
+         data_i.load((const quint32*)data, Vc::Aligned);
+     } else {
+@@ -189,29 +168,11 @@ static inline void fetch_all_32(const qu
+     }
+ 
+     const quint32 lowByteMask = 0xFF;
+-    Vc::uint_v mask(lowByteMask);
++    uint_v mask(lowByteMask);
+ 
+-    alpha = Vc::float_v(Vc::int_v(data_i >> 24));
+-    c1 = Vc::float_v(Vc::int_v((data_i >> 16) & mask));
+-    c2 = Vc::float_v(Vc::int_v((data_i >> 8)  & mask));
+-    c3 = Vc::float_v(Vc::int_v( data_i        & mask));
+-}
+-
+-template <bool aligned>
+-static inline void fetch_8_offset(const quint8 *data,
+-                                  Vc::float_v &value,
+-                                  const quint32 offset) {
+-    Vc::uint_v data_i;
+-    if (aligned) {
+-        data_i.load((const quint32*)data, Vc::Aligned);
+-    } else {
+-        data_i.load((const quint32*)data, Vc::Unaligned);
+-    }
+-
+-    const quint32 lowByteMask = 0xFF;
+-    Vc::uint_v mask(lowByteMask);
+-
+-    value = Vc::float_v(Vc::int_v((data_i >> offset) & mask));
++    c1 = Vc::float_v(int_v((data_i >> 16) & mask));
++    c2 = Vc::float_v(int_v((data_i >> 8)  & mask));
++    c3 = Vc::float_v(int_v( data_i        & mask));
+ }
+ 
+ /**
+@@ -233,19 +194,18 @@ static inline void write_channels_32(qui
+      */
+ 
+     const quint32 lowByteMask = 0xFF;
+-    Vc::uint_v mask(lowByteMask);
+ 
+     // FIXME: Use single-instruction rounding + conversion
+     //        The achieve that we need to implement Vc::iRound()
+ 
+-    Vc::uint_v v1 = Vc::uint_v(Vc::int_v(Vc::round(alpha))) << 24;
+-    Vc::uint_v v2 = (Vc::uint_v(Vc::int_v(Vc::round(c1))) & mask) << 16;
+-    Vc::uint_v v3 = (Vc::uint_v(Vc::int_v(Vc::round(c2))) & mask) <<  8;
++    uint_v mask(lowByteMask);
++    uint_v v1 = uint_v(int_v(Vc::round(alpha))) << 24;
++    uint_v v2 = (uint_v(int_v(Vc::round(c1))) & mask) << 16;
++    uint_v v3 = (uint_v(int_v(Vc::round(c2))) & mask) <<  8;
++    uint_v v4 = uint_v(int_v(Vc::round(c3))) & mask;
+     v1 = v1 | v2;
+-    Vc::uint_v v4 = Vc::uint_v(Vc::int_v(Vc::round(c3))) & mask;
+     v3 = v3 | v4;
+-
+-    *((Vc::uint_v*)data) = v1 | v3;
++    *((uint_v*)data) = v1 | v3;
+ }
+ 
+ /**
+--- krita-2.99.90/libs/pigment/compositeops/KoVcMultiArchBuildSupport.h.vc12	2016-04-22 21:41:15.000000000 +0200
++++ krita-2.99.90/libs/pigment/compositeops/KoVcMultiArchBuildSupport.h	2016-04-29 13:35:36.598427690 +0200
+@@ -35,6 +35,7 @@
+ #pragma warning ( disable : 4244 )
+ #pragma warning ( disable : 4800 )
+ #endif
++#include <Vc/global.h>
+ #include <Vc/Vc>
+ #include <Vc/support.h>
+ #if defined _MSC_VER
+@@ -44,11 +45,9 @@
+ #else /* HAVE_VC */
+ 
+ namespace Vc {
+-    typedef enum {ScalarImpl} Implementation;
++    typedef enum {ScalarImpl} CurrentImplementation;
+ }
+ 
+-#define VC_IMPL ::Vc::ScalarImpl
+-
+ #ifdef DO_PACKAGERS_BUILD
+ #ifdef __GNUC__
+ #warning "Packagers build is not available without the presence of Vc library. Disabling."
+@@ -90,12 +89,9 @@ createOptimizedClass(typename FactoryTyp
+      *
+      * TODO: Add FMA3/4 when it is adopted by Vc
+      */
+-#if VC_VERSION_NUMBER >= VC_VERSION_CHECK(0, 8, 0)
+     if (Vc::isImplementationSupported(Vc::AVX2Impl)) {
+         return FactoryType::template create<Vc::AVX2Impl>(param);
+-    } else
+-#endif
+-    if (Vc::isImplementationSupported(Vc::AVXImpl)) {
++    } else if (Vc::isImplementationSupported(Vc::AVXImpl)) {
+         return FactoryType::template create<Vc::AVXImpl>(param);
+     } else if (Vc::isImplementationSupported(Vc::SSE41Impl)) {
+         return FactoryType::template create<Vc::SSE41Impl>(param);
+@@ -119,7 +115,7 @@ template<class FactoryType>
+ typename FactoryType::ReturnType
+ createOptimizedClass(typename FactoryType::ParamType param)
+ {
+-    return FactoryType::template create<VC_IMPL>(param);
++    return FactoryType::template create<Vc::CurrentImplementation::current()>(param);
+ }
+ 
+ #endif /* DO_PACKAGERS_BUILD */

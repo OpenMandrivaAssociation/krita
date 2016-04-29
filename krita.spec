@@ -3,10 +3,12 @@
 %define __noautoreq 'devel.*'
 
 Name: krita
-Version: 2.99.89
+Version: 2.99.90
 Release: 1
 Source0: http://download.kde.org/%{stable}/%{name}/%{version}/%{name}-%{version}.tar.xz
 Source1000: %{name}.rpmlintrc
+# Based on https://phabricator.kde.org/file/data/vdjjpfxia6f6ubclybqo/PHID-FILE-k7rnmfu4xctfe6jzrsas/D1327.diff
+Patch0: krita-2.99.90-vc-1.2.0.patch
 Summary: Sketching and painting program
 URL: http://krita.org/
 License: GPL
@@ -79,6 +81,7 @@ and textures for rendering.
 
 %prep
 %setup -q
+%apply_patches
 # gcc currently gives us better performance with Krita
 # because Krita uses OpenMP gcc-isms
 export CC=gcc
@@ -110,7 +113,6 @@ export CXX=g++
 %{_datadir}/%{name}
 %{_datadir}/kritagemini
 %{_datadir}/kritaplugins
-%{_datadir}/kritaanimation
 %{_datadir}/kritasketch
 %{_datadir}/color/icc/krita
 %{_datadir}/color-schemes/Krita*.colors
