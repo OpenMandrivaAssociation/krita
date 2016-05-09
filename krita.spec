@@ -3,6 +3,8 @@
 %define __noautoreq 'devel.*'
 
 Name: krita
+# Needs to match/outnumber calligra
+Epoch: 16
 Version: 2.99.90
 Release: 1
 Source0: http://download.kde.org/%{stable}/%{name}/%{version}/%{name}-%{version}.tar.xz
