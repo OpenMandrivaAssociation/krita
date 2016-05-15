@@ -6,7 +6,7 @@ Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
 Version: 2.99.90
-Release: 1
+Release: 2
 Source0: http://download.kde.org/%{stable}/%{name}/%{version}/%{name}-%{version}.tar.xz
 Source1000: %{name}.rpmlintrc
 # Based on https://phabricator.kde.org/file/data/vdjjpfxia6f6ubclybqo/PHID-FILE-k7rnmfu4xctfe6jzrsas/D1327.diff
@@ -73,8 +73,11 @@ BuildRequires: pkgconfig(OpenEXR)
 # Those used to be separate libpackages in 2.x, but it didn't make much
 # sense, nothing outside of krita uses those libraries (and nothing can,
 # they don't come with headers...)
+Obsoletes: calligra-krita < %{EVRD}
 Obsoletes: %{_lib}kritacolord < %{EVRD}
 Obsoletes: %{_lib}kritacolor14 < %{EVRD}
+Obsoletes: %{_lib}kritalibpaintop14 < %{EVRD}
+Obsoletes: %{_lib}kritaui14 < %{EVRD}
 
 %description
 Krita offers an end–to–end solution for creating digital painting files
