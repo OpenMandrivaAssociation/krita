@@ -5,8 +5,8 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 2.99.90
-Release: 2
+Version: 2.99.91
+Release: 1
 Source0: http://download.kde.org/%{stable}/%{name}/%{version}/%{name}-%{version}.tar.xz
 Source1000: %{name}.rpmlintrc
 # Based on https://phabricator.kde.org/file/data/vdjjpfxia6f6ubclybqo/PHID-FILE-k7rnmfu4xctfe6jzrsas/D1327.diff
@@ -102,23 +102,17 @@ export CXX=g++
 
 %files
 %config %{_sysconfdir}/xdg/kritarc
-%config %{_sysconfdir}/xdg/kritasketchrc
-%config %{_sysconfdir}/xdg/kritasketchpanelsrc
 %{_bindir}/krita
 %{_bindir}/gmicparser
-%{_bindir}/kritasketch
 %{_datadir}/appdata/krita.appdata.xml
 %{_datadir}/applications/*
 %{_libdir}/libkrita*.so*
 %dir %{_libdir}/kritaplugins
 %{_libdir}/kritaplugins/*.so
-%{_libdir}/qt5/qml/org/krita
 %{_datadir}/icons/*/*/*/calligrakrita.*
-%{_datadir}/icons/*/*/*/kritasketch.*
 %{_datadir}/%{name}
 %{_datadir}/kritagemini
 %{_datadir}/kritaplugins
 %{_datadir}/kritasketch
 %{_datadir}/color/icc/krita
 %{_datadir}/color-schemes/Krita*.colors
-%{_datadir}/mime/packages/*.xml
