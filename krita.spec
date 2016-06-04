@@ -1,13 +1,14 @@
 %define stable %([ "`echo %{version} |cut -d. -f3`" -ge 80 ] && echo -n un; echo -n stable)
 # See rpmlintrc for reason
 %define __noautoreq 'devel.*'
+%define _disable_lto 1
 
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 2.99.91
+Version: 3.0
 Release: 1
-Source0: http://download.kde.org/%{stable}/%{name}/%{version}/%{name}-%{version}.tar.xz
+Source0: http://download.kde.org/%{stable}/%{name}/%{version}/%{name}-%{version}.tgz
 Source1000: %{name}.rpmlintrc
 # Based on https://phabricator.kde.org/file/data/vdjjpfxia6f6ubclybqo/PHID-FILE-k7rnmfu4xctfe6jzrsas/D1327.diff
 Patch0: krita-2.99.90-vc-1.2.0.patch
