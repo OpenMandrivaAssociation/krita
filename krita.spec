@@ -43,6 +43,7 @@ BuildRequires: cmake(KF5KIO)
 BuildRequires: cmake(KF5Crash)
 BuildRequires: cmake(Gettext)
 BuildRequires: cmake(PythonInterp)
+BuildRequires: cmake(Vc)
 # x86 package
 %ifarch %{ix86} x86_64
 BuildRequires: cmake(Vc)
