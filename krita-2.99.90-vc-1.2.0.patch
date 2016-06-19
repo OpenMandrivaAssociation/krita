@@ -477,3 +477,18 @@
  }
  
  #endif /* DO_PACKAGERS_BUILD */
+--- krita-3.0/CMakeLists.txt.omv~	2016-06-19 17:32:17.093347415 +0200
++++ krita-3.0/CMakeLists.txt	2016-06-19 17:32:31.792188874 +0200
+@@ -481,10 +481,10 @@ macro_optional_find_package(Vc 0.6.70)
+ # as workaround simply search the package again with an exact lower number
+ # TODO: improve or file feature request with cmake
+ if(Vc_FOUND)
+-    if(Vc_VERSION_MAJOR GREATER 0 OR Vc_VERSION_MINOR GREATER 7)
++    if(Vc_VERSION_MAJOR GREATER 90 OR Vc_VERSION_MINOR GREATER 7)
+         message(STATUS "Vc ${Vc_VERSION} is too new, currently only Vc versions <= 0.7.5 can be used.")
+         # reset find results by looking exactly for latest valid version
+-        find_package(Vc 0.7.5 EXACT QUIET)
++        find_package(Vc 1.2.0 EXACT QUIET)
+     endif()
+ endif()
+ macro_log_feature(Vc_FOUND "Vc" "Portable, zero-overhead SIMD library for C++" "https://github.com/VcDevel/Vc" FALSE "" "Required by the Krita for vectorization")

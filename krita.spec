@@ -93,7 +93,8 @@ and textures for rendering.
 export CC=gcc
 export CXX=g++
 
-%cmake_kde5 -G Ninja
+%cmake_kde5 \
+	-G Ninja
 
 %build
 %ninja -C build
@@ -112,8 +113,6 @@ export CXX=g++
 %{_libdir}/kritaplugins/*.so
 %{_datadir}/icons/*/*/*/calligrakrita.*
 %{_datadir}/%{name}
-%{_datadir}/kritagemini
 %{_datadir}/kritaplugins
-%{_datadir}/kritasketch
 %{_datadir}/color/icc/krita
 %{_datadir}/color-schemes/Krita*.colors
