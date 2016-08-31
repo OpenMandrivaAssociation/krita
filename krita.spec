@@ -110,7 +110,7 @@ rm -f %{buildroot}%{_datadir}/color-schemes/Breeze*.colors
 %config %{_sysconfdir}/xdg/kritarc
 %{_bindir}/krita
 %{_bindir}/gmicparser
-%{_datadir}/appdata/org.kde.krita.appdata.xml
+%{_datadir}/metainfo/org.kde.krita.appdata.xml
 %{_datadir}/applications/*
 %{_libdir}/libkrita*.so*
 %dir %{_libdir}/kritaplugins
