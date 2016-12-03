@@ -6,7 +6,7 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 3.0.99.91
+Version: 3.0.1.1
 Release: 1
 Source0: http://files.kde.org/krita/%(echo %{version} |cut -d. -f1)/source/%{name}-%{version}.tar.gz
 Source1000: %{name}.rpmlintrc
