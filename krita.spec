@@ -6,12 +6,12 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 3.0
+Version: 3.1.1
 Release: 1
-Source0: http://download.kde.org/%{stable}/%{name}/%{version}/%{name}-%{version}.tgz
+Source0: http://download.kde.org/stable/krita/%{version}/%{name}-%{version}.tar.gz
 Source1000: %{name}.rpmlintrc
 # Based on https://phabricator.kde.org/file/data/vdjjpfxia6f6ubclybqo/PHID-FILE-k7rnmfu4xctfe6jzrsas/D1327.diff
-Patch0: krita-2.99.90-vc-1.2.0.patch
+#Patch0: krita-2.99.90-vc-1.2.0.patch
 Summary: Sketching and painting program
 URL: http://krita.org/
 License: GPL
@@ -101,17 +101,22 @@ export CXX=g++
 
 %install
 %ninja_install -C build
+# We get those from breeze...
+rm -f %{buildroot}%{_datadir}/color-schemes/Breeze*.colors
 
-%files
+%find_lang krita || touch krita.lang
+
+%files -f krita.lang
 %config %{_sysconfdir}/xdg/kritarc
 %{_bindir}/krita
 %{_bindir}/gmicparser
-%{_datadir}/appdata/krita.appdata.xml
+%{_datadir}/metainfo/org.kde.krita.appdata.xml
 %{_datadir}/applications/*
 %{_libdir}/libkrita*.so*
 %dir %{_libdir}/kritaplugins
 %{_libdir}/kritaplugins/*.so
 %{_datadir}/icons/*/*/*/calligrakrita.*
+%{_datadir}/icons/*/*/*/application-x-krita.*
 %{_datadir}/%{name}
 %{_datadir}/kritaplugins
 %{_datadir}/color/icc/krita
