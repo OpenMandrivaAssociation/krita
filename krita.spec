@@ -6,9 +6,9 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 3.0.1.1
+Version: 3.1.1
 Release: 1
-Source0: http://files.kde.org/krita/%(echo %{version} |cut -d. -f1)/source/%{name}-%{version}.tar.gz
+Source0: http://download.kde.org/stable/krita/%{version}/%{name}-%{version}.tar.gz
 Source1000: %{name}.rpmlintrc
 # Based on https://phabricator.kde.org/file/data/vdjjpfxia6f6ubclybqo/PHID-FILE-k7rnmfu4xctfe6jzrsas/D1327.diff
 #Patch0: krita-2.99.90-vc-1.2.0.patch
@@ -116,6 +116,7 @@ rm -f %{buildroot}%{_datadir}/color-schemes/Breeze*.colors
 %dir %{_libdir}/kritaplugins
 %{_libdir}/kritaplugins/*.so
 %{_datadir}/icons/*/*/*/calligrakrita.*
+%{_datadir}/icons/*/*/*/application-x-krita.*
 %{_datadir}/%{name}
 %{_datadir}/kritaplugins
 %{_datadir}/color/icc/krita
