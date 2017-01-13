@@ -7,7 +7,7 @@ Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
 Version: 3.1.1
-Release: 1
+Release: 2
 Source0: http://download.kde.org/stable/krita/%{version}/%{name}-%{version}.tar.gz
 Source1000: %{name}.rpmlintrc
 # Based on https://phabricator.kde.org/file/data/vdjjpfxia6f6ubclybqo/PHID-FILE-k7rnmfu4xctfe6jzrsas/D1327.diff
@@ -79,6 +79,10 @@ Obsoletes: %{_lib}kritacolord < %{EVRD}
 Obsoletes: %{_lib}kritacolor14 < %{EVRD}
 Obsoletes: %{_lib}kritalibpaintop14 < %{EVRD}
 Obsoletes: %{_lib}kritaui14 < %{EVRD}
+
+%define langlist af ar ast be bg br bs ca cs cy da de el en_GB eo es et eu fa fi fr fy ga gl he hi hne hr hu ia is it ja kk km ko lt lv mai mk mr ms nb nds ne nl nn oc pa pl pt pt_BR ro ru se sk sl sq sv ta tg th tr ug uk uz vi wa xh zh_CN zh_TW
+
+%{expand:%(for lang in %langlist; do echo "Obsoletes:	krita-l10n-$lang"; done)}
 
 %description
 Krita offers an end–to–end solution for creating digital painting files
