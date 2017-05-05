@@ -16,8 +16,7 @@ Summary: Sketching and painting program
 URL: http://krita.org/
 License: GPL
 Group: Graphics
-BuildRequires: cmake
-BuildRequires: ninja
+BuildRequires: cmake(Qt5Multimedia)
 BuildRequires: cmake(Qt5Concurrent)
 BuildRequires: cmake(Qt5Core)
 BuildRequires: cmake(Qt5DBus)
@@ -65,7 +64,8 @@ BuildRequires: pkgconfig(OpenColorIO)
 BuildRequires: pkgconfig(poppler-qt5)
 BuildRequires: pkgconfig(xcb-util)
 BuildRequires: pkgconfig(zlib)
-BuildRequires: gcc gcc-c++
+BuildRequires: gcc
+BuildRequires: gcc-c++
 BuildRequires: gomp-devel
 # Optional -- for EXR file format support
 BuildRequires: pkgconfig(IlmBase)
@@ -97,8 +97,7 @@ and textures for rendering.
 export CC=gcc
 export CXX=g++
 
-%cmake_kde5 \
-	-G Ninja
+%cmake_kde5 -G Ninja
 
 %build
 %ninja -C build
