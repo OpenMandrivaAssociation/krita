@@ -67,6 +67,7 @@ BuildRequires: pkgconfig(zlib)
 # Optional -- for EXR file format support
 BuildRequires: pkgconfig(IlmBase)
 BuildRequires: pkgconfig(OpenEXR)
+BuildRequires: pkgconfig(gsl)
 
 # Those used to be separate libpackages in 2.x, but it didn't make much
 # sense, nothing outside of krita uses those libraries (and nothing can,
