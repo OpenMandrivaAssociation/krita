@@ -7,7 +7,7 @@ Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
 Version: 3.1.3
-Release: 1
+Release: 2
 Source0: http://download.kde.org/stable/krita/%{version}/%{name}-%{version}.tar.gz
 Source1000: %{name}.rpmlintrc
 # Based on https://phabricator.kde.org/file/data/vdjjpfxia6f6ubclybqo/PHID-FILE-k7rnmfu4xctfe6jzrsas/D1327.diff
@@ -64,9 +64,6 @@ BuildRequires: pkgconfig(OpenColorIO)
 BuildRequires: pkgconfig(poppler-qt5)
 BuildRequires: pkgconfig(xcb-util)
 BuildRequires: pkgconfig(zlib)
-BuildRequires: gcc
-BuildRequires: gcc-c++
-BuildRequires: gomp-devel
 # Optional -- for EXR file format support
 BuildRequires: pkgconfig(IlmBase)
 BuildRequires: pkgconfig(OpenEXR)
@@ -92,11 +89,6 @@ and textures for rendering.
 %prep
 %setup -q
 %apply_patches
-# gcc currently gives us better performance with Krita
-# because Krita uses OpenMP gcc-isms
-export CC=gcc
-export CXX=g++
-
 %cmake_kde5 -G Ninja
 
 %build
