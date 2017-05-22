@@ -64,9 +64,14 @@ BuildRequires: pkgconfig(OpenColorIO)
 BuildRequires: pkgconfig(poppler-qt5)
 BuildRequires: pkgconfig(xcb-util)
 BuildRequires: pkgconfig(zlib)
+BuildRequires: gmic-devel
+BuildRequires: gcc
+BuildRequires: gcc-c++
+BuildRequires: gomp-devel
 # Optional -- for EXR file format support
 BuildRequires: pkgconfig(IlmBase)
 BuildRequires: pkgconfig(OpenEXR)
+BuildRequires: pkgconfig(gsl)
 
 # Those used to be separate libpackages in 2.x, but it didn't make much
 # sense, nothing outside of krita uses those libraries (and nothing can,
@@ -89,6 +94,12 @@ and textures for rendering.
 %prep
 %setup -q
 %apply_patches
+# gcc currently gives us better performance with Krita
+# because Krita uses OpenMP gcc-isms
+# (tpg) krita can't see LLVM's OpenMP 2017-05-22
+export CC=gcc
+export CXX=g++
+
 %cmake_kde5 -G Ninja
 
 %build
