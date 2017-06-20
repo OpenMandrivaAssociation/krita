@@ -1,0 +1,23 @@
+--- krita-3.1.4/libs/ui/KisResourceBundleManifest.cpp.omv~	2017-06-20 20:14:12.899180295 +0200
++++ krita-3.1.4/libs/ui/KisResourceBundleManifest.cpp	2017-06-20 20:14:15.467120560 +0200
+@@ -22,7 +22,6 @@
+ #include <QDomElement>
+ #include <QDomNode>
+ #include <QDomNodeList>
+-#include <QForeachContainer>
+ 
+ #include <KoXmlNS.h>
+ #include <KoXmlReader.h>
+--- krita-3.1.4/plugins/extensions/gmic/CMakeLists.txt.omv~	2017-06-20 20:12:28.354612783 +0200
++++ krita-3.1.4/plugins/extensions/gmic/CMakeLists.txt	2017-06-20 20:12:45.872205106 +0200
+@@ -3,8 +3,9 @@
+ ##
+ 
+ if (CMAKE_COMPILER_IS_GNUCXX)
+-    add_compile_options("-Wno-misleading-indentation")
++	add_compile_options("-Wno-misleading-indentation")
+ endif()
++add_compile_options("-Wno-date-time")
+ 
+ set(GMIC_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/gmic")
+ 
