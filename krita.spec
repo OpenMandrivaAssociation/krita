@@ -6,11 +6,10 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 3.1.4
+Version: 3.2.0
 Release: 1
 Source0: http://download.kde.org/stable/krita/%{version}/%{name}-%{version}.tar.gz
 Source1000: %{name}.rpmlintrc
-Patch0: krita-3.1.4-compile.patch
 # Based on https://phabricator.kde.org/file/data/vdjjpfxia6f6ubclybqo/PHID-FILE-k7rnmfu4xctfe6jzrsas/D1327.diff
 #Patch0: krita-2.99.90-vc-1.2.0.patch
 Summary: Sketching and painting program
@@ -116,7 +115,6 @@ rm -f %{buildroot}%{_datadir}/color-schemes/Breeze*.colors
 %files -f krita.lang
 %config %{_sysconfdir}/xdg/kritarc
 %{_bindir}/krita
-%{_bindir}/gmicparser
 %{_datadir}/metainfo/org.kde.krita.appdata.xml
 %{_datadir}/applications/*
 %{_libdir}/libkrita*.so*
