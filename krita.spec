@@ -6,9 +6,9 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 3.3.1
+Version: 3.3.2.1
 Release: 1
-Source0: http://download.kde.org/stable/krita/%{version}/%{name}-%{version}.tar.gz
+Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}.tar.xz
 Source1000: %{name}.rpmlintrc
 # Based on https://phabricator.kde.org/file/data/vdjjpfxia6f6ubclybqo/PHID-FILE-k7rnmfu4xctfe6jzrsas/D1327.diff
 #Patch0: krita-2.99.90-vc-1.2.0.patch
