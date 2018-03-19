@@ -6,9 +6,9 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 4.0.0.51
+Version: 4.0.0
 Release: 1
-Source0: http://download.kde.org/unstable/krita/%{version}/%{name}-%{version}.tar.gz
+Source0: http://download.kde.org/stable/krita/%{version}/%{name}-%{version}.tar.gz
 Source1000: %{name}.rpmlintrc
 # Based on https://phabricator.kde.org/file/data/vdjjpfxia6f6ubclybqo/PHID-FILE-k7rnmfu4xctfe6jzrsas/D1327.diff
 #Patch0: krita-2.99.90-vc-1.2.0.patch
@@ -99,6 +99,9 @@ and textures for rendering.
 # (tpg) krita can't see LLVM's OpenMP 2017-05-22
 export CC=gcc
 export CXX=g++
+
+# check wrongly requires qt5.9 but really can be 5.8
+sed -i 's/0x050900/0x050800/' plugins/impex/raw/3rdparty/libkdcraw/src/kdcraw_p.cpp
 
 %cmake_kde5 -G Ninja
 
