@@ -6,7 +6,7 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 3.3.3
+Version: 4.0.0
 Release: 1
 Source0: http://download.kde.org/stable/krita/%{version}/%{name}-%{version}.tar.gz
 Source1000: %{name}.rpmlintrc
@@ -100,6 +100,9 @@ and textures for rendering.
 export CC=gcc
 export CXX=g++
 
+# check wrongly requires qt5.9 but really can be 5.8
+sed -i 's/0x050900/0x050800/' plugins/impex/raw/3rdparty/libkdcraw/src/kdcraw_p.cpp
+
 %cmake_kde5 -G Ninja
 
 %build
@@ -115,11 +118,14 @@ rm -f %{buildroot}%{_datadir}/color-schemes/Breeze*.colors
 %files -f krita.lang
 %config %{_sysconfdir}/xdg/kritarc
 %{_bindir}/krita
+%{_bindir}/kritarunner
 %{_datadir}/metainfo/org.kde.krita.appdata.xml
 %{_datadir}/applications/*
 %{_libdir}/libkrita*.so*
 %dir %{_libdir}/kritaplugins
 %{_libdir}/kritaplugins/*.so
+%{_libdir}/krita-python-libs
+%{_libdir}/qt5/qml/org/krita
 %{_datadir}/icons/*/*/*/calligrakrita.*
 %{_datadir}/icons/*/*/*/application-x-krita.*
 %{_datadir}/%{name}

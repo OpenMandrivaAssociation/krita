@@ -2,3 +2,4 @@
 # like libraries...
 addFilter("E: devel-file-in-non-devel-package")
 addFilter("E: executable-in-library-package")
+addFilter("E: incoherent-version-in-name")
