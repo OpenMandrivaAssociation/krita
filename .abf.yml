@@ -2,5 +2,6 @@ removed_sources:
   krita-3.3.1.tar.gz: 37f7e0042af09b28ad4d978655d450a8f615430b
   krita-3.3.3.tar.gz: 66c868ffd00d5bb86e55f8e38ceda81d8003e133
   krita-4.0.0.51.tar.gz: 12e1cb03789984c439926000cd16f1dcd42b4475
-sources:
   krita-4.0.0.tar.gz: 75cfb256f8634ea70cb8fdcd5e718c8de2e07cdf
+sources:
+  krita-4.0.1.tar.gz: 547b8fd015ce16e78bceeee86e850be27c76e85b
