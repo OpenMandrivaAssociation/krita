@@ -1,6 +1,6 @@
 %define stable %([ "`echo %{version} |cut -d. -f3`" -ge 80 ] && echo -n un; echo -n stable)
 # See rpmlintrc for reason
-%define __noautoreq 'devel.*'
+%define __prequires_exclude 'devel.*'
 %define _disable_lto 1
 
 Name: krita
@@ -45,10 +45,11 @@ BuildRequires: cmake(KF5Crash)
 BuildRequires: cmake(Gettext)
 BuildRequires: cmake(PythonInterp)
 # x86 package
-%ifarch %{ix86} x86_64
+%ifarch %{ix86} x86_64 znver1
 BuildRequires: cmake(Vc)
 %endif
 BuildRequires: boost-devel
+BuildRequires: pkgconfig(python)
 BuildRequires: pkgconfig(eigen3)
 BuildRequires: pkgconfig(exiv2)
 BuildRequires: pkgconfig(fftw3)
