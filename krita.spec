@@ -1,6 +1,8 @@
+%define _python_bytecompile_errors_terminate_build 0
+
 %define stable %([ "`echo %{version} |cut -d. -f3`" -ge 80 ] && echo -n un; echo -n stable)
 # See rpmlintrc for reason
-%define __prequires_exclude 'devel.*'
+%define __requires_exclude 'devel.*'
 %define _disable_lto 1
 
 Name: krita
