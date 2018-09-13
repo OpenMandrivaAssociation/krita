@@ -1,0 +1,128 @@
+diff -up krita-4.1.1/plugins/impex/raw/3rdparty/libkdcraw/src/kdcraw_p.cpp.omv~ krita-4.1.1/plugins/impex/raw/3rdparty/libkdcraw/src/kdcraw_p.cpp
+--- krita-4.1.1/plugins/impex/raw/3rdparty/libkdcraw/src/kdcraw_p.cpp.omv~	2018-09-13 19:08:38.439748069 +0200
++++ krita-4.1.1/plugins/impex/raw/3rdparty/libkdcraw/src/kdcraw_p.cpp	2018-09-13 19:09:54.716935802 +0200
+@@ -375,6 +375,7 @@ bool KDcraw::Private::loadFromLibraw(con
+             raw.imgdata.params.fbdd_noiserd = lround(m_parent->m_rawDecodingSettings.NRThreshold / 100.0);
+             break;
+         }
++#if !LIBRAW_COMPILE_CHECK_VERSION_NOTLESS(0, 19)
+         case RawDecodingSettings::LINENR:
+         {
+             // (100 - 1000) => (0.001 - 0.02) conversion.
+@@ -391,23 +392,28 @@ bool KDcraw::Private::loadFromLibraw(con
+             raw.imgdata.params.cfa_clean    = true;
+             break;
+         }
++#endif
+         default:   // No Noise Reduction
+         {
+             raw.imgdata.params.threshold    = 0;
+             raw.imgdata.params.fbdd_noiserd = 0;
++#if !LIBRAW_COMPILE_CHECK_VERSION_NOTLESS(0, 19)
+             raw.imgdata.params.linenoise    = 0;
+             raw.imgdata.params.cfaline      = false;
+             raw.imgdata.params.lclean       = 0;
+             raw.imgdata.params.cclean       = 0;
+             raw.imgdata.params.cfa_clean    = false;
++#endif
+             break;
+         }
+     }
+ 
++#if !LIBRAW_COMPILE_CHECK_VERSION_NOTLESS(0, 19)
+     // Chromatic aberration correction.
+     raw.imgdata.params.ca_correc  = m_parent->m_rawDecodingSettings.enableCACorrection;
+     raw.imgdata.params.cared      = m_parent->m_rawDecodingSettings.caMultiplier[0];
+     raw.imgdata.params.cablue     = m_parent->m_rawDecodingSettings.caMultiplier[1];
++#endif
+ 
+     // Exposure Correction before interpolation.
+     raw.imgdata.params.exp_correc = m_parent->m_rawDecodingSettings.expoCorrection;
+@@ -461,8 +467,10 @@ bool KDcraw::Private::loadFromLibraw(con
+ 
+     raw.imgdata.params.dcb_iterations = m_parent->m_rawDecodingSettings.dcbIterations;
+     raw.imgdata.params.dcb_enhance_fl = m_parent->m_rawDecodingSettings.dcbEnhanceFl;
++#if !LIBRAW_COMPILE_CHECK_VERSION_NOTLESS(0, 19)
+     raw.imgdata.params.eeci_refine    = m_parent->m_rawDecodingSettings.eeciRefine;
+     raw.imgdata.params.es_med_passes  = m_parent->m_rawDecodingSettings.esMedPasses;
++#endif
+ 
+     //-------------------------------------------------------------------------------------------
+ 
+diff -up krita-4.1.1/plugins/impex/raw/3rdparty/libkdcraw/src/rawdecodingsettings.h.omv~ krita-4.1.1/plugins/impex/raw/3rdparty/libkdcraw/src/rawdecodingsettings.h
+--- krita-4.1.1/plugins/impex/raw/3rdparty/libkdcraw/src/rawdecodingsettings.h.omv~	2018-09-13 19:10:05.289963993 +0200
++++ krita-4.1.1/plugins/impex/raw/3rdparty/libkdcraw/src/rawdecodingsettings.h	2018-09-13 19:13:22.317569854 +0200
+@@ -54,8 +54,6 @@ public:
+ 
+     /** RAW decoding Interpolation methods
+      *
+-     * NOTE: from original dcraw demosaic
+-     * 
+      *  Bilinear: use high-speed but low-quality bilinear
+      *            interpolation (default - for slow computer). In this method,
+      *            the red value of a non-red pixel is computed as the average of
+@@ -71,20 +69,22 @@ public:
+      *  AHD:      use Adaptive Homogeneity-Directed interpolation.
+      *            This method selects the direction of interpolation so as to
+      *            maximize a homogeneity metric, thus typically minimizing color artifacts.
++     *  DCB:      DCB interpolation (see http://www.linuxphoto.org/html/dcb.html for details)
+      * 
+-     * NOTE: from GPL2 demosaic pack.
++     * NOTE: from GPL2/GPL3 demosaic packs - will not work with libraw >= 0.19
+      * 
+-     *  DCB:      DCB interpolation (see http://www.linuxphoto.org/html/dcb.html for details)
+      *  PL_AHD:   modified AHD interpolation (see http://sites.google.com/site/demosaicalgorithms/modified-dcraw
+      *            for details).
+      *  AFD:      demosaicing through 5 pass median filter from PerfectRaw project.
+      *  VCD:      VCD interpolation.
+      *  VCD_AHD:  mixed demosaicing between VCD and AHD.
+      *  LMMSE:    LMMSE interpolation from PerfectRaw.
+-     * 
+-     * NOTE: from GPL3 demosaic pack.
+-     * 
+      *  AMAZE:    AMaZE interpolation and color aberration removal from RawTherapee project.
++     *
++     * NOTE: for libraw >= 0.19 only
++     *
++     *  DHT:      DHT interpolation
++     *  AAHD:     Enhanced Adaptive AHD interpolation
+      */
+     enum DecodingQuality
+     {
+@@ -101,7 +101,9 @@ public:
+         VCD_AHD  = 8,
+         LMMSE    = 9,
+         // Extended demosaicing methods from GPL3 demosaic pack
+-        AMAZE    = 10
++        AMAZE    = 10,
++	DHT      = 11,
++	AAHD     = 12
+     };
+ 
+     /** White balances alternatives
+@@ -261,6 +263,7 @@ public:
+     int NRThreshold;
+ 
+     /** Turn on chromatic aberrations correction
++     * @deprecated does not work with libraw>=0.19
+      */
+     bool enableCACorrection;
+ 
+@@ -268,6 +271,7 @@ public:
+      *  - caMultiplier[0] = amount of correction on red-green axis.
+      *  - caMultiplier[1] = amount of correction on blue-yellow axis.
+      *  - Both values set to 0.0 = automatic CA correction.
++     * @deprecated does not work with libraw>=0.19
+      */
+     double caMultiplier[2];
+ 
+@@ -344,7 +348,8 @@ public:
+     int esMedPasses;
+ 
+     /** For IMPULSENR Noise reduction. Set the amount of Chrominance impulse denoise.
+-        Null value disable NR. Range is between 100 and 1000.
++     *  Null value disable NR. Range is between 100 and 1000.
++     *  @deprecated does not work with libraw>=0.19
+      */
+     int NRChroThreshold;
+ 
