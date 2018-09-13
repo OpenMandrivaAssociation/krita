@@ -14,6 +14,7 @@ Source0: http://download.kde.org/stable/krita/%{version}/%{name}-%{version}.tar.
 Source1000: %{name}.rpmlintrc
 # Based on https://phabricator.kde.org/file/data/vdjjpfxia6f6ubclybqo/PHID-FILE-k7rnmfu4xctfe6jzrsas/D1327.diff
 #Patch0: krita-2.99.90-vc-1.2.0.patch
+Patch0:	krita-4.0.3-libraw-0.19.patch
 Summary: Sketching and painting program
 URL: http://krita.org/
 License: GPL
