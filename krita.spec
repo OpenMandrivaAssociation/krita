@@ -47,7 +47,7 @@ BuildRequires: cmake(KF5Crash)
 BuildRequires: cmake(Gettext)
 BuildRequires: cmake(PythonInterp)
 # x86 package
-%ifarch %{ix86} x86_64 znver1
+%ifarch %{ix86} %{x86_64}
 BuildRequires: cmake(Vc)
 %endif
 BuildRequires: boost-devel
