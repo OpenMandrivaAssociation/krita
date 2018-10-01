@@ -8,14 +8,12 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 4.1.1
-Release: 2
+Version: 4.1.3
+Release: 1
 Source0: http://download.kde.org/stable/krita/%{version}/%{name}-%{version}.tar.gz
 Source1000: %{name}.rpmlintrc
 # Based on https://phabricator.kde.org/file/data/vdjjpfxia6f6ubclybqo/PHID-FILE-k7rnmfu4xctfe6jzrsas/D1327.diff
 #Patch0: krita-2.99.90-vc-1.2.0.patch
-# Based on https://phabricator.kde.org/D15132
-Patch1: krita-4.1.1-libraw-0.19.patch
 Summary: Sketching and painting program
 URL: http://krita.org/
 License: GPL
