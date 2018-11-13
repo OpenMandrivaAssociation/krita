@@ -1,2 +1,4 @@
-sources:
+removed_sources:
   krita-4.1.4.tar.gz: dae257f36eebbade2d7ab3866dad3f6ac663ab7c
+sources:
+  krita-4.1.5.tar.gz: 966962730b5b6f3e4f8070faa9621364d77af454

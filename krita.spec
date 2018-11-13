@@ -8,7 +8,7 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 4.1.4
+Version: 4.1.5
 Release: 2
 Source0: http://download.kde.org/stable/krita/%{version}/%{name}-%{version}.tar.gz
 Source1000: %{name}.rpmlintrc
