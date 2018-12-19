@@ -8,9 +8,9 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 4.1.4
-Release: 2
-Source0: http://download.kde.org/stable/krita/%{version}/%{name}-%{version}.tar.gz
+Version: 4.1.7.101
+Release: 1
+Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}.tar.gz
 Source1000: %{name}.rpmlintrc
 # Based on https://phabricator.kde.org/file/data/vdjjpfxia6f6ubclybqo/PHID-FILE-k7rnmfu4xctfe6jzrsas/D1327.diff
 #Patch0: krita-2.99.90-vc-1.2.0.patch
