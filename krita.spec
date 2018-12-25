@@ -9,11 +9,10 @@ Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
 Version: 4.1.7.101
-Release: 2
+Release: 3
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}.tar.gz
 Source1000: %{name}.rpmlintrc
-# Based on https://phabricator.kde.org/file/data/vdjjpfxia6f6ubclybqo/PHID-FILE-k7rnmfu4xctfe6jzrsas/D1327.diff
-#Patch0: krita-2.99.90-vc-1.2.0.patch
+Patch0: krita-4.1.7.101-exiv2-0.27.patch
 Summary: Sketching and painting program
 URL: http://krita.org/
 License: GPL
@@ -100,8 +99,7 @@ from scratch by masters. It supports concept art, creation of comics
 and textures for rendering.
 
 %prep
-%setup -q
-%apply_patches
+%autosetup -p1
 # gcc currently gives us better performance with Krita
 # because Krita uses OpenMP gcc-isms
 # (tpg) krita can't see LLVM's OpenMP 2017-05-22

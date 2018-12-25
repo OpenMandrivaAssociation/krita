@@ -1,0 +1,12 @@
+diff -up krita-4.1.7.101/cmake/modules/FindExiv2.cmake.omv~ krita-4.1.7.101/cmake/modules/FindExiv2.cmake
+--- krita-4.1.7.101/cmake/modules/FindExiv2.cmake.omv~	2018-12-25 18:17:22.666997835 +0100
++++ krita-4.1.7.101/cmake/modules/FindExiv2.cmake	2018-12-25 18:17:49.903372972 +0100
+@@ -57,7 +57,7 @@ find_library(EXIV2_LIBRARY NAMES exiv2 l
+ 
+ # Get the version number from exiv2/version.hpp and store it in the cache:
+ if(EXIV2_INCLUDE_DIR  AND NOT  EXIV2_VERSION)
+-  file(READ ${EXIV2_INCLUDE_DIR}/exiv2/version.hpp EXIV2_VERSION_CONTENT)
++  file(READ ${EXIV2_INCLUDE_DIR}/exiv2/exv_conf.h EXIV2_VERSION_CONTENT)
+   string(REGEX MATCH "#define EXIV2_MAJOR_VERSION +\\( *([0-9]+) *\\)"  _dummy "${EXIV2_VERSION_CONTENT}")
+   set(EXIV2_VERSION_MAJOR "${CMAKE_MATCH_1}")
+ 
