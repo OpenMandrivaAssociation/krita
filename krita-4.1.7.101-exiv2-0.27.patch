@@ -10,3 +10,15 @@ diff -up krita-4.1.7.101/cmake/modules/FindExiv2.cmake.omv~ krita-4.1.7.101/cmak
    string(REGEX MATCH "#define EXIV2_MAJOR_VERSION +\\( *([0-9]+) *\\)"  _dummy "${EXIV2_VERSION_CONTENT}")
    set(EXIV2_VERSION_MAJOR "${CMAKE_MATCH_1}")
  
+diff -up krita-4.1.7.101/libs/ui/kisexiv2/kis_xmp_io.cpp.omv~ krita-4.1.7.101/libs/ui/kisexiv2/kis_xmp_io.cpp
+--- krita-4.1.7.101/libs/ui/kisexiv2/kis_xmp_io.cpp.omv~	2018-12-25 19:37:04.193260082 +0100
++++ krita-4.1.7.101/libs/ui/kisexiv2/kis_xmp_io.cpp	2018-12-25 19:37:17.489467875 +0100
+@@ -17,7 +17,7 @@
+ #include "kis_xmp_io.h"
+ 
+ #include <string>
+-#include <exiv2/xmp.hpp>
++#include <exiv2/xmp_exiv2.hpp>
+ 
+ #include "kis_exiv2.h"
+ 
