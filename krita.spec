@@ -13,6 +13,9 @@ Release: 3
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}.tar.gz
 Source1000: %{name}.rpmlintrc
 Patch0: krita-4.1.7.101-exiv2-0.27.patch
+# Krita's forked Qt XCB bits don't work well with Qt >= 5.12 (yet)
+# so let's use Qt's version
+Patch1: https://packaging.neon.kde.org/extras/krita.git/plain/debian/patches/0001-Add-a-cmake-option-to-disable-our-own-tablet-support.patch?h=Neon/release&id=dda9ab62ea2e0c41395e2834395fd49fdc91132a
 Summary: Sketching and painting program
 URL: http://krita.org/
 License: GPL
@@ -106,16 +109,15 @@ and textures for rendering.
 export CC=gcc
 export CXX=g++
 
-# check wrongly requires qt5.9 but really can be 5.8
-sed -i 's/0x050900/0x050800/' plugins/impex/raw/3rdparty/libkdcraw/src/kdcraw_p.cpp
-
-%cmake_kde5 -G Ninja
+%cmake_kde5 \
+	-DUSE_QT_XCB:BOOL=TRUE \
+	-G Ninja
 
 %build
-%ninja -C build
+%ninja -C build -w dupbuild=warn
 
 %install
-%ninja_install -C build
+%ninja_install -C build -w dupbuild=warn
 # We get those from breeze...
 rm -f %{buildroot}%{_datadir}/color-schemes/Breeze*.colors
 

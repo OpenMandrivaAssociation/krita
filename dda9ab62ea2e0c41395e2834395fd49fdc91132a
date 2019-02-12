@@ -1,0 +1,117 @@
+From 98aab8f2942cdc78dda8cfeba3580bd9d57e00a2 Mon Sep 17 00:00:00 2001
+From: Boudewijn Rempt <boud@valdyas.org>
+Date: Fri, 5 Oct 2018 11:16:26 +0200
+Subject: [PATCH] Add a cmake option to disable our own tablet support
+
+Off by default, this makes it easier to check whether bugs are
+caused by our fork of Qt's classes or to check whether Qt's tablet
+support has improved.
+
+CCBUG:399379
+---
+ CMakeLists.txt                          |  4 ++++
+ config_use_qt_xcb.h.cmake               |  6 ++++++
+ krita/main.cc                           |  8 +++++++-
+ libs/ui/CMakeLists.txt                  | 12 ++++++++----
+ libs/ui/input/wintab/qxcbconnection.cpp |  1 -
+ 5 files changed, 25 insertions(+), 6 deletions(-)
+ create mode 100644 config_use_qt_xcb.h.cmake
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 17c9cd2d7..3199ae4da 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -168,6 +168,10 @@ if (WIN32)
+     endif (MINGW)
+ endif ()
+ 
++option(USE_QT_XCB "Do not use Krita's forked XCB connection and tablet support on X11, but leave everything to Qt." OFF)
++configure_file(config_use_qt_xcb.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config_use_qt_xcb.h)
++add_feature_info("Use Qt's XCB and Tablet support on X11" USE_QT_XCB "Do not use Krita's forked XCB connection and tablet support on X11, but leave everything to Qt.")
++
+ option(HIDE_SAFE_ASSERTS "Don't show message box for \"safe\" asserts, just ignore them automatically and dump a message to the terminal." ON)
+ configure_file(config-hide-safe-asserts.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-hide-safe-asserts.h)
+ add_feature_info("Hide Safe Asserts" HIDE_SAFE_ASSERTS "Don't show message box for \"safe\" asserts, just ignore them automatically and dump a message to the terminal.")
+diff --git a/config_use_qt_xcb.h.cmake b/config_use_qt_xcb.h.cmake
+new file mode 100644
+index 000000000..9fe3360cc
+--- /dev/null
++++ b/config_use_qt_xcb.h.cmake
+@@ -0,0 +1,6 @@
++/* config_use_qt_xcb.h. Generated from config_use_qt_xcb.h.cmake */
++
++#cmakedefine USE_QT_XCB 1
++
++
++
+diff --git a/krita/main.cc b/krita/main.cc
+index dca2ee170..398fa3384 100644
+--- a/krita/main.cc
++++ b/krita/main.cc
+@@ -63,8 +63,11 @@
+ #include <QLibrary>
+ 
+ #elif defined HAVE_X11
++#include "config_use_qt_xcb.h"
++#ifndef USE_QT_XCB
+ #include <kis_xi2_event_filter.h>
+ #endif
++#endif
+ 
+ #if defined HAVE_KCRASH
+ #include <kcrash.h>
+@@ -336,8 +339,11 @@ extern "C" int main(int argc, char **argv)
+     }
+ 
+ #if defined HAVE_X11
+-    app.installNativeEventFilter(KisXi2EventFilter::instance());
++    #ifndef USE_QT_XCB
++        app.installNativeEventFilter(KisXi2EventFilter::instance());
++    #endif
+ #endif
++
+     app.installEventFilter(KisQtWidgetsTweaker::instance());
+ 
+ 
+diff --git a/libs/ui/CMakeLists.txt b/libs/ui/CMakeLists.txt
+index 2909398ab..b4673ca92 100644
+--- a/libs/ui/CMakeLists.txt
++++ b/libs/ui/CMakeLists.txt
+@@ -425,14 +425,18 @@ endif()
+         input/wintab/drawpile_tablettester/tablettest.cpp
+     )
+ 
+-if(UNIX)
++if (UNIX)
+     set(kritaui_LIB_SRCS
+         ${kritaui_LIB_SRCS}
+-        input/kis_tablet_event.cpp
+-        input/wintab/kis_tablet_support.cpp
+         qtlockedfile/qtlockedfile_unix.cpp
+         )
+-    if(NOT APPLE)
++    if(NOT USE_QT_XCB)
++    set(kritaui_LIB_SRCS
++        ${kritaui_LIB_SRCS}
++        input/wintab/kis_tablet_support.cpp
++    )
++    endif()
++    if(NOT APPLE AND NOT USE_QT_XCB)
+         set(kritaui_LIB_SRCS
+             ${kritaui_LIB_SRCS}
+             input/wintab/qxcbconnection_xi2.cpp
+diff --git a/libs/ui/input/wintab/qxcbconnection.cpp b/libs/ui/input/wintab/qxcbconnection.cpp
+index 5991bc187..c062d05e0 100644
+--- a/libs/ui/input/wintab/qxcbconnection.cpp
++++ b/libs/ui/input/wintab/qxcbconnection.cpp
+@@ -41,7 +41,6 @@
+ #include <QGuiApplication>
+ #include <QApplication>
+ 
+-
+ #include <X11/extensions/XI2proto.h>
+ #include <xcb/xproto.h>
+ 
+-- 
+2.17.1
+
