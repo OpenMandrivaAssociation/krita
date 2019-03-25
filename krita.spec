@@ -78,6 +78,7 @@ BuildRequires: pkgconfig(gsl)
 BuildRequires: giflib-devel
 BuildRequires: python-qt5-devel
 BuildRequires: python-sip
+Requires: python-qt5-xml
 
 # Those used to be separate libpackages in 2.x, but it didn't make much
 # sense, nothing outside of krita uses those libraries (and nothing can,
