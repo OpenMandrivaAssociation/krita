@@ -8,7 +8,7 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 4.1.8
+Version: 4.2.0
 Release: 1
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}.tar.gz
 Source1000: %{name}.rpmlintrc
@@ -44,6 +44,7 @@ BuildRequires: cmake(KF5KIO)
 BuildRequires: cmake(KF5Crash)
 BuildRequires: cmake(Gettext)
 BuildRequires: cmake(PythonInterp)
+BuildRequires: cmake(QuaZip5)
 # x86 package
 %ifarch %{ix86} %{x86_64}
 BuildRequires: cmake(Vc)
