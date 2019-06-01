@@ -50,7 +50,7 @@ BuildRequires: cmake(QuaZip5)
 BuildRequires: cmake(Vc)
 %endif
 BuildRequires: boost-devel
-BuildRequires: pkgconfig(python)
+BuildRequires: pkgconfig(python3)
 BuildRequires: pkgconfig(eigen3)
 BuildRequires: pkgconfig(exiv2)
 BuildRequires: pkgconfig(fftw3)
@@ -78,6 +78,10 @@ BuildRequires: pkgconfig(OpenEXR)
 BuildRequires: pkgconfig(gsl)
 BuildRequires: giflib-devel
 BuildRequires: python-qt5-devel
+BuildRequires: python-qt5-core
+BuildRequires: python-qt5-gui
+BuildRequires: python-qt5-widgets
+BuildRequires: python-qt5-xml
 BuildRequires: python-sip
 Requires: python-qt5-xml
 
