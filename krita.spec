@@ -83,6 +83,9 @@ BuildRequires: python-qt5-gui
 BuildRequires: python-qt5-widgets
 BuildRequires: python-qt5-xml
 BuildRequires: python-sip
+
+BuildRequires: pkgconfig(quazip)
+
 Requires: python-qt5-xml
 
 # Those used to be separate libpackages in 2.x, but it didn't make much
