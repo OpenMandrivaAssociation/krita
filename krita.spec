@@ -108,8 +108,8 @@ and textures for rendering.
 # gcc currently gives us better performance with Krita
 # because Krita uses OpenMP gcc-isms
 # (tpg) krita can't see LLVM's OpenMP 2017-05-22
-export CC=gcc
-export CXX=g++
+#export CC=gcc
+#export CXX=g++
 
 %cmake_kde5 \
 	-DUSE_QT_XCB:BOOL=TRUE \
