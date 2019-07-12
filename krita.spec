@@ -85,6 +85,7 @@ BuildRequires: python-qt5-xml
 BuildRequires: python-sip
 
 BuildRequires: pkgconfig(quazip)
+BuildRequires: atomic-devel
 
 Requires: python-qt5-xml
 
