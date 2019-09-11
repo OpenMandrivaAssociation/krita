@@ -136,7 +136,8 @@ rm -f %{buildroot}%{_datadir}/color-schemes/Breeze*.colors
 %{_libdir}/kritaplugins/*.so
 %{_libdir}/krita-python-libs
 %{_libdir}/qt5/qml/org/krita
-#{_datadir}/icons/*/*/*/calligrakrita.*
+%{_iconsdir}/hicolor/*x*/apps/krita.png
+%{_iconsdir}/hicolor/scalable/apps/krita.svgz
 %{_datadir}/icons/*/*/*/application-x-krita.*
 %{_datadir}/%{name}
 %{_datadir}/kritaplugins
