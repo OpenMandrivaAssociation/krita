@@ -1,8 +1,6 @@
 %define _python_bytecompile_errors_terminate_build 0
 
-%define beta beta1
-
-%define stable %([ -n "%{beta}" ] && echo -n un; echo -n stable)
+%define stable %([ "`echo %{version} |cut -d. -f3`" -ge 80 ] && echo -n un; echo -n stable)
 # See rpmlintrc for reason
 %define __requires_exclude 'devel.*'
 %define _disable_lto 1
@@ -10,8 +8,8 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 4.2.7
-Release: %{?beta:0.%{beta}.}1
+Version: 4.2.7.1
+Release: 1
 Source0: http://download.kde.org/%{stable}/krita/%(echo %{version} |cut -d. -f1-3)%{?beta:-%{beta}}/%{name}-%{version}%{?beta:-%{beta}}.tar.gz
 Source1000: %{name}.rpmlintrc
 Summary: Sketching and painting program
@@ -106,7 +104,7 @@ from scratch by masters. It supports concept art, creation of comics
 and textures for rendering.
 
 %prep
-%autosetup -p1 -n %{name}-%{version}%{?beta:-%{beta}}
+%autosetup -p1
 # gcc currently gives us better performance with Krita
 # because Krita uses OpenMP gcc-isms
 # (tpg) krita can't see LLVM's OpenMP 2017-05-22
