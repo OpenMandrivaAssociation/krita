@@ -1,6 +1,6 @@
 %define _python_bytecompile_errors_terminate_build 0
 
-%define stable %([ "`echo %{version} |cut -d. -f3`" -ge 80 ] && echo -n un; echo -n stable)
+%define stable %([ -n "%{?beta:%{beta}}" ] && echo -n un; echo -n stable)
 # See rpmlintrc for reason
 %define __requires_exclude 'devel.*'
 %define _disable_lto 1
@@ -10,7 +10,7 @@ Name: krita
 Epoch: 16
 Version: 4.2.7.1
 Release: 1
-Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}.tar.xz
+Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source1000: %{name}.rpmlintrc
 Summary: Sketching and painting program
 URL: http://krita.org/
@@ -104,12 +104,12 @@ from scratch by masters. It supports concept art, creation of comics
 and textures for rendering.
 
 %prep
-%autosetup -p1
+%autosetup -p1 -n %{name}-%{version}%{?beta:%{beta}}
 # gcc currently gives us better performance with Krita
 # because Krita uses OpenMP gcc-isms
 # (tpg) krita can't see LLVM's OpenMP 2017-05-22
-export CC=gcc
-export CXX=g++
+#export CC=gcc
+#export CXX=g++
 
 %cmake_kde5 \
 	-DUSE_QT_XCB:BOOL=TRUE \
