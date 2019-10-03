@@ -10,7 +10,7 @@ Name: krita
 Epoch: 16
 Version: 4.2.7.1
 Release: 1
-Source0: http://download.kde.org/%{stable}/krita/%(echo %{version} |cut -d. -f1-3)%{?beta:-%{beta}}/%{name}-%{version}%{?beta:-%{beta}}.tar.gz
+Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}.tar.xz
 Source1000: %{name}.rpmlintrc
 Summary: Sketching and painting program
 URL: http://krita.org/
