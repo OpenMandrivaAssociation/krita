@@ -72,6 +72,7 @@ BuildRequires: gmic-devel
 BuildRequires: gcc
 BuildRequires: gcc-c++
 BuildRequires: gomp-devel
+BuildRequires: atomic-devel
 # Optional -- for EXR file format support
 BuildRequires: pkgconfig(IlmBase)
 BuildRequires: pkgconfig(OpenEXR)
