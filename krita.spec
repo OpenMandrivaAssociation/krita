@@ -12,6 +12,8 @@ Version: 4.2.9
 Release: 1
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source1000: %{name}.rpmlintrc
+Patch0:		krita-4.2.9-fix-missing-include-for-qt-5.15-openmandriva.patch
+
 Summary: Sketching and painting program
 URL: http://krita.org/
 License: GPL
