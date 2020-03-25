@@ -9,7 +9,8 @@ diff -up krita-4.2.9/libs/global/KisHandlePainterHelper.cpp krita-4.2.9/libs/glo
  #include "kis_algebra_2d.h"
  #include "kis_painting_tweaks.h"
  
- diff -up krita-4.2.9/libs/flake/KoPathShape.cpp krita-4.2.9/libs/flake/KoPathShape.cpp-om --- krita-4.2.9/libs/flake/KoPathShape.cpp      2020-03-23 13:56:54.000000000 +0100
+ diff -up krita-4.2.9/libs/flake/KoPathShape.cpp krita-4.2.9/libs/flake/KoPathShape.cpp-om 
+--- krita-4.2.9/libs/flake/KoPathShape.cpp      2020-03-23 13:56:54.000000000 +0100
 +++ krita-4.2.9/libs/flake/KoPathShape.cpp-om   2020-03-25 14:00:38.372466994 +0100
 @@ -50,6 +50,7 @@
  
