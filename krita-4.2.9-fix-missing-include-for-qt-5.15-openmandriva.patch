@@ -1,0 +1,10 @@
+diff -up krita-4.2.9/libs/global/KisHandlePainterHelper.cpp krita-4.2.9/libs/global/KisHandlePainterHelper.cpp-om 
+--- krita-4.2.9/libs/global/KisHandlePainterHelper.cpp  2020-03-23 13:56:54.000000000 +0100
++++ krita-4.2.9/libs/global/KisHandlePainterHelper.cpp-om       2020-03-25 13:21:56.691375393 +0100
+@@ -19,6 +19,7 @@
+ #include "KisHandlePainterHelper.h"
+ 
+ #include <QPainter>
++#include <QPainterPath>
+ #include "kis_algebra_2d.h"
+ #include "kis_painting_tweaks.h"
