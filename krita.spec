@@ -12,7 +12,7 @@ Version: 4.2.9
 Release: 2
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source1000: %{name}.rpmlintrc
-Patch0:		krita-4.2.9-fix-missing-include-for-qt-5.15-openmandriva.patch
+Patch0: krita-4.2.9-qt-5.15.patch
 
 Summary: Sketching and painting program
 URL: http://krita.org/
@@ -131,13 +131,11 @@ rm -f %{buildroot}%{_datadir}/color-schemes/Breeze*.colors
 %files -f krita.lang
 %config %{_sysconfdir}/xdg/kritarc
 %{_bindir}/krita
-%{_bindir}/kritarunner
 %{_datadir}/metainfo/org.kde.krita.appdata.xml
 %{_datadir}/applications/*
 %{_libdir}/libkrita*.so*
 %dir %{_libdir}/kritaplugins
 %{_libdir}/kritaplugins/*.so
-%{_libdir}/krita-python-libs
 %{_libdir}/qt5/qml/org/krita
 %{_iconsdir}/hicolor/*x*/apps/krita.png
 %{_iconsdir}/hicolor/scalable/apps/krita.svgz
