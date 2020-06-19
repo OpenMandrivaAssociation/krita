@@ -44,8 +44,6 @@ BuildRequires: cmake(KF5ItemViews)
 BuildRequires: cmake(KF5WindowSystem)
 BuildRequires: cmake(KF5KIO)
 BuildRequires: cmake(KF5Crash)
-BuildRequires: cmake(Gettext)
-BuildRequires: cmake(PythonInterp)
 BuildRequires: cmake(QuaZip5)
 # x86 package
 %ifarch %{ix86} %{x86_64}
