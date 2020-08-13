@@ -111,6 +111,8 @@ and textures for rendering.
 #export CC=gcc
 #export CXX=g++
 
+sed -e "/CMAKE_CXX_STANDARD/s/11/14/" -i CMakeLists.txt || die
+
 %cmake_kde5 \
 	-DUSE_QT_XCB:BOOL=TRUE \
 	-G Ninja
