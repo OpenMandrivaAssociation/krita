@@ -111,6 +111,13 @@ and textures for rendering.
 #export CC=gcc
 #export CXX=g++
 
+# As of Krita 4.3.0 and boost 1.73, krita failed to build due error: 
+# /usr/include/boost/geometry/index/detail/rtree/node/variant_visitor.hpp:51:5: error: no matching function for call to 'apply_visitor'
+# boost::apply_visitor(v, n);
+# Looks like krita want to build with c++11 and this cause issue, to fix we need force c++14 here (angry)
+# Fix stolen from https://bugs.gentoo.org/728744
+sed -e "/CMAKE_CXX_STANDARD/s/11/14/" -i CMakeLists.txt || die
+
 %cmake_kde5 \
 	-DUSE_QT_XCB:BOOL=TRUE \
 	-G Ninja
