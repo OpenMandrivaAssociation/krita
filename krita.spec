@@ -8,8 +8,8 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 4.3.0
-Release: 2
+Version: 4.4.0
+Release: 1
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source1000: %{name}.rpmlintrc
 
@@ -135,6 +135,7 @@ rm -f %{buildroot}%{_datadir}/color-schemes/Breeze*.colors
 %files -f krita.lang
 %config %{_sysconfdir}/xdg/kritarc
 %{_bindir}/krita
+%{_bindir}/krita_version
 %{_datadir}/metainfo/org.kde.krita.appdata.xml
 %{_datadir}/applications/*
 %{_libdir}/libkrita*.so*
