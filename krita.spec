@@ -12,6 +12,7 @@ Version: 4.4.2
 Release: 1
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source1000: %{name}.rpmlintrc
+Patch0:	0110-Pass-proper-dirty-rect-in-paint-event-to-QOpenGLWidg.patch
 
 Summary: Sketching and painting program
 URL: http://krita.org/
