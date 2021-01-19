@@ -12,7 +12,9 @@ Version: 4.4.2
 Release: 1
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source1000: %{name}.rpmlintrc
-
+%ifarch %{arm} %{armx}
+Patch0:	krita-4.4.2-OpenMandriva-fix-build-with-OpenGLES-aarch64-and-armvhnl.patch
+%endif
 Summary: Sketching and painting program
 URL: http://krita.org/
 License: GPL
@@ -63,7 +65,9 @@ BuildRequires: pkgconfig(libtiff-4)
 BuildRequires: pkgconfig(libraw)
 BuildRequires: pkgconfig(libraw_r)
 BuildRequires: pkgconfig(shared-mime-info)
+%ifnarch %{arm} %{armx}
 BuildRequires: pkgconfig(OpenColorIO)
+%endif
 BuildRequires: pkgconfig(poppler-qt5)
 BuildRequires: pkgconfig(xcb-util)
 BuildRequires: pkgconfig(zlib)
@@ -123,6 +127,9 @@ sed -e "/CMAKE_CXX_STANDARD/s/11/14/" -i CMakeLists.txt || die
 	-G Ninja
 
 %build
+%ifarch %{arm} %{armx}
+export CXXFLAGS="%{optflags} -DHAS_ONLY_OPENGL_ES"
+%endif
 %ninja -C build -w dupbuild=warn
 
 %install
