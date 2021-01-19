@@ -63,7 +63,9 @@ BuildRequires: pkgconfig(libtiff-4)
 BuildRequires: pkgconfig(libraw)
 BuildRequires: pkgconfig(libraw_r)
 BuildRequires: pkgconfig(shared-mime-info)
+%ifnarch %{arm} %{armx}
 BuildRequires: pkgconfig(OpenColorIO)
+%endif
 BuildRequires: pkgconfig(poppler-qt5)
 BuildRequires: pkgconfig(xcb-util)
 BuildRequires: pkgconfig(zlib)
@@ -123,6 +125,9 @@ sed -e "/CMAKE_CXX_STANDARD/s/11/14/" -i CMakeLists.txt || die
 	-G Ninja
 
 %build
+%ifarch %{arm} %{armx}
+export CXXFLAGS="%{optflags} -DHAS_ONLY_OPENGL_ES"
+%endif
 %ninja -C build -w dupbuild=warn
 
 %install
