@@ -1,0 +1,25 @@
+diff -uraN krita-4.4.2/CMakeLists.txt openmandriva-krita-4.4.2/CMakeLists.txt
+--- krita-4.4.2/CMakeLists.txt	2021-01-19 11:07:59.000000000 +0100
++++ openmandriva-krita-4.4.2/CMakeLists.txt	2021-01-19 20:49:31.167395877 +0100
+@@ -706,7 +706,7 @@
+     URL "https://www.opencolorio.org"
+     TYPE OPTIONAL
+     PURPOSE "Required by the Krita LUT docker")
+-macro_bool_to_01(OCIO_FOUND HAVE_OCIO)
++#macro_bool_to_01(OCIO_FOUND HAVE_OCIO)
+ 
+ set_package_properties(PythonLibrary PROPERTIES
+     DESCRIPTION "Python Library"
+diff -uraN krita-4.4.2/libs/ui/CMakeLists.txt openmandriva-krita-4.4.2/libs/ui/CMakeLists.txt
+--- krita-4.4.2/libs/ui/CMakeLists.txt	2021-01-19 11:07:59.000000000 +0100
++++ openmandriva-krita-4.4.2/libs/ui/CMakeLists.txt	2021-01-19 20:47:58.052479192 +0100
+@@ -6,6 +6,9 @@
+     ${EIGEN3_INCLUDE_DIR}
+     ${OCIO_INCLUDE_DIR}
+ )
++#forcing on ARMv7hnl and aarch64 for OpenMandriva
++add_definitions(-DQT_OPENGL_ES_3)
++add_definitions(-DHAS_ONLY_OPENGL_ES) 
+ 
+ if (ANDROID)
+     add_definitions(-DQT_OPENGL_ES_3)
