@@ -9,7 +9,7 @@ Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
 Version: 4.4.3
-Release: 1
+Release: 2
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
@@ -59,22 +59,20 @@ BuildRequires: pkgconfig(gsl)
 BuildRequires: pkgconfig(lcms2)
 BuildRequires: pkgconfig(libpng)
 BuildRequires: pkgconfig(xi)
-BuildRequires: jpeg-devel
+BuildRequires: pkgconfig(libjpeg)
+BuildRequires: pkgconfig(libopenjp2)
 BuildRequires: pkgconfig(libcurl)
 BuildRequires: pkgconfig(libtiff-4)
 BuildRequires: pkgconfig(libraw)
 BuildRequires: pkgconfig(libraw_r)
 BuildRequires: pkgconfig(shared-mime-info)
-%ifnarch %{arm} %{armx}
+%ifnarch %{armx}
 BuildRequires: pkgconfig(OpenColorIO)
 %endif
 BuildRequires: pkgconfig(poppler-qt5)
 BuildRequires: pkgconfig(xcb-util)
 BuildRequires: pkgconfig(zlib)
 BuildRequires: gmic-devel
-BuildRequires: gcc
-BuildRequires: gcc-c++
-BuildRequires: gomp-devel
 BuildRequires: atomic-devel
 # Optional -- for EXR file format support
 BuildRequires: pkgconfig(IlmBase)
@@ -109,11 +107,6 @@ and textures for rendering.
 
 %prep
 %autosetup -p1 -n %{name}-%{version}%{?beta:%{beta}}
-# gcc currently gives us better performance with Krita
-# because Krita uses OpenMP gcc-isms
-# (tpg) krita can't see LLVM's OpenMP 2017-05-22
-#export CC=gcc
-#export CXX=g++
 
 # As of Krita 4.3.0 and boost 1.73, krita failed to build due error: 
 # /usr/include/boost/geometry/index/detail/rtree/node/variant_visitor.hpp:51:5: error: no matching function for call to 'apply_visitor'
