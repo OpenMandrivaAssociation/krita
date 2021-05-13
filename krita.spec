@@ -45,7 +45,7 @@ BuildRequires: cmake(KF5ItemViews)
 BuildRequires: cmake(KF5WindowSystem)
 BuildRequires: cmake(KF5KIO)
 BuildRequires: cmake(KF5Crash)
-BuildRequires: cmake(QuaZip5)
+BuildRequires: cmake(QuaZip-Qt5)
 # x86 package
 %ifarch %{ix86} %{x86_64}
 BuildRequires: cmake(Vc)
