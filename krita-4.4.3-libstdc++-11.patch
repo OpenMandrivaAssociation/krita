@@ -1,0 +1,23 @@
+diff -up krita-4.4.3/libs/pigment/KoAlphaMaskApplicatorFactoryImpl.cpp.omv~ krita-4.4.3/libs/pigment/KoAlphaMaskApplicatorFactoryImpl.cpp
+--- krita-4.4.3/libs/pigment/KoAlphaMaskApplicatorFactoryImpl.cpp.omv~	2021-05-14 05:40:18.964774379 +0200
++++ krita-4.4.3/libs/pigment/KoAlphaMaskApplicatorFactoryImpl.cpp	2021-05-14 05:40:28.076799794 +0200
+@@ -18,6 +18,7 @@
+ 
+ #include "KoAlphaMaskApplicatorFactoryImpl.h"
+ #include "KoAlphaMaskApplicator.h"
++#include <limits>
+ 
+ #include <KoConfig.h>
+ #ifdef HAVE_OPENEXR
+diff -up krita-4.4.3/libs/pigment/KoAlphaMaskApplicatorFactoryImpl.h.omv~ krita-4.4.3/libs/pigment/KoAlphaMaskApplicatorFactoryImpl.h
+--- krita-4.4.3/libs/pigment/KoAlphaMaskApplicatorFactoryImpl.h.omv~	2021-05-14 05:41:56.014183341 +0200
++++ krita-4.4.3/libs/pigment/KoAlphaMaskApplicatorFactoryImpl.h	2021-05-14 05:42:01.579215503 +0200
+@@ -18,6 +18,7 @@
+ #ifndef KOALPHAMASKAPPLICATORFACTORYIMPL_H
+ #define KOALPHAMASKAPPLICATORFACTORYIMPL_H
+ 
++#include <limits>
+ #include <KoAlphaMaskApplicatorBase.h>
+ #include <KoVcMultiArchBuildSupport.h>
+ 
+diff -up krita-4.4.3/libs/pigment/KoAlphaMaskApplicatorFactoryImpl_Scalar.cpp.omv~ krita-4.4.3/libs/pigment/KoAlphaMaskApplicatorFactoryImpl_Scalar.cpp

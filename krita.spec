@@ -15,6 +15,8 @@ Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
 #Patch0:	krita-4.4.2-OpenMandriva-fix-build-with-OpenGLES-aarch64-and-armvhnl.patch
 #endif
+Patch0:	krita-4.4.3-find-quazip-1.1.patch
+Patch1: krita-4.4.3-libstdc++-11.patch
 Summary: Sketching and painting program
 URL: http://krita.org/
 License: GPL
@@ -107,6 +109,9 @@ and textures for rendering.
 
 %prep
 %autosetup -p1 -n %{name}-%{version}%{?beta:%{beta}}
+
+# We need to use the system version
+rm cmake/modules/FindQuaZip.cmake
 
 # As of Krita 4.3.0 and boost 1.73, krita failed to build due error: 
 # /usr/include/boost/geometry/index/detail/rtree/node/variant_visitor.hpp:51:5: error: no matching function for call to 'apply_visitor'
