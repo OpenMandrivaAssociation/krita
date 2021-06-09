@@ -8,8 +8,8 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 4.4.3
-Release: 2
+Version: 4.4.5
+Release: 1
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
