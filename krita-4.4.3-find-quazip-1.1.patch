@@ -1,24 +1,7 @@
-diff -up krita-4.4.3/libs/store/CMakeLists.txt.omv~ krita-4.4.3/libs/store/CMakeLists.txt
---- krita-4.4.3/libs/store/CMakeLists.txt.omv~	2021-05-14 05:21:28.866350867 +0200
-+++ krita-4.4.3/libs/store/CMakeLists.txt	2021-05-14 05:22:26.458095143 +0200
-@@ -1,3 +1,4 @@
-+find_package(QuaZip-Qt5 REQUIRED)
- include_directories(${QUAZIP_INCLUDE_DIRS})
- 
- add_subdirectory(tests)
-@@ -24,7 +25,7 @@ target_link_libraries(kritastore
-         KF5::ConfigCore
-         Qt5::Xml 
-         Qt5::Gui 
--        ${QUAZIP_LIBRARIES}
-+        QuaZip::QuaZip
- )
- 
- set_target_properties(kritastore PROPERTIES
-diff -up krita-4.4.3/CMakeLists.txt.omv~ krita-4.4.3/CMakeLists.txt
---- krita-4.4.3/CMakeLists.txt.omv~	2021-05-14 05:30:47.458797180 +0200
-+++ krita-4.4.3/CMakeLists.txt	2021-05-14 05:31:09.488076449 +0200
-@@ -850,16 +850,10 @@ set_package_properties(Poppler PROPERTIE
+diff -uraN krita-5.0.0-beta1/CMakeLists.txt omv-krita-5.0.0-beta1/CMakeLists.txt
+--- krita-5.0.0-beta1/CMakeLists.txt	2021-08-18 04:17:52.000000000 +0200
++++ omv-krita-5.0.0-beta1/CMakeLists.txt	2021-08-22 15:33:50.627730012 +0200
+@@ -993,16 +993,10 @@
  ##
  ## Test for quazip
  ##
@@ -35,5 +18,22 @@ diff -up krita-4.4.3/CMakeLists.txt.omv~ krita-4.4.3/CMakeLists.txt
 -list (APPEND ANDROID_EXTRA_LIBS ${QUAZIP_LIBRARIES}
 +list (APPEND ANDROID_EXTRA_LIBS QuaZip::QuaZip
                                  ${EXPAT_LIBRARY}
-                                 ${KF5_LIBRARIES}/libKF5Completion.so
-                                 ${KF5_LIBRARIES}/libKF5WindowSystem.so
+                                 ${KF5_LIBRARIES}/libssl_1_1.so
+                                 ${KF5_LIBRARIES}/libcrypto_1_1.so
+diff -uraN krita-5.0.0-beta1/libs/store/CMakeLists.txt omv-krita-5.0.0-beta1/libs/store/CMakeLists.txt
+--- krita-5.0.0-beta1/libs/store/CMakeLists.txt	2021-08-18 04:17:52.000000000 +0200
++++ omv-krita-5.0.0-beta1/libs/store/CMakeLists.txt	2021-08-22 15:32:41.741572244 +0200
+@@ -1,3 +1,4 @@
++find_package(QuaZip-Qt5 REQUIRED)
+ include_directories(${QUAZIP_INCLUDE_DIRS})
+ 
+ add_subdirectory(tests)
+@@ -24,7 +25,7 @@
+         KF5::ConfigCore
+         Qt5::Xml 
+         Qt5::Gui 
+-        ${QUAZIP_LIBRARIES}
++       QuaZip::QuaZip
+ )
+ 
+ set_target_properties(kritastore PROPERTIES
