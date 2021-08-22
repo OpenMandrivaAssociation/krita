@@ -5,7 +5,7 @@
 %define __requires_exclude 'devel.*'
 %define _disable_lto 1
 
-%global optflags %{optflags} -lquazip
+%global optflags %{optflags} -quazip
 
 Name: krita
 # Needs to match/outnumber calligra
