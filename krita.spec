@@ -128,6 +128,8 @@ sed -e "/CMAKE_CXX_STANDARD/s/11/14/" -i CMakeLists.txt || die
 	-G Ninja
 
 %build
+export CC=gcc
+export CXX=g++
 %ifarch %{arm} %{armx}
 export CXXFLAGS="%{optflags} -DHAS_ONLY_OPENGL_ES"
 %endif
