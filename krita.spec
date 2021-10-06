@@ -18,6 +18,7 @@ Source1000: %{name}.rpmlintrc
 #Patch0:	krita-4.4.2-OpenMandriva-fix-build-with-OpenGLES-aarch64-and-armvhnl.patch
 #endif
 #Patch0:	krita-4.4.3-find-quazip-1.1.patch
+Patch0:		f7b17aed7c7b4e7de8b19ce13edc3eab2bc5f7f3.patch
 Patch1: krita-4.4.3-libstdc++-11.patch
 Summary: Sketching and painting program
 URL: http://krita.org/
