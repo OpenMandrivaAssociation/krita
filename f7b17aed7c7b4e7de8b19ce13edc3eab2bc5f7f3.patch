@@ -1,0 +1,61 @@
+From f7b17aed7c7b4e7de8b19ce13edc3eab2bc5f7f3 Mon Sep 17 00:00:00 2001
+From: Antonio Rojas <arojas@archlinux.org>
+Date: Sun, 11 Oct 2020 23:06:18 +0200
+Subject: [PATCH] More robust check for quazip 1.x
+
+Search for quazip's own cmake config first, and fallback to finding the libraries and include dirs manually as before
+
+BUG: 427511
+---
+ cmake/modules/FindQuaZip.cmake | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
+
+diff --git a/cmake/modules/FindQuaZip.cmake b/cmake/modules/FindQuaZip.cmake
+index 345c7909ab..574577e230 100644
+--- a/cmake/modules/FindQuaZip.cmake
++++ b/cmake/modules/FindQuaZip.cmake
+@@ -4,11 +4,15 @@
+ # QUAZIP_LIBRARIES           - List of QuaZip libraries
+ # QUAZIP_ZLIB_INCLUDE_DIR    - The include dir of zlib headers
+ 
+-
+-IF (QUAZIP_INCLUDE_DIRS AND QUAZIP_LIBRARIES)
++find_package(QuaZip-Qt5 QUIET)
++IF (QuaZip-Qt5_FOUND)
++        set(QUAZIP_INCLUDE_DIRS QuaZip::QuaZip)
++        set(QUAZIP_LIBRARIES QuaZip::QuaZip)
++        set(QUAZIP_FOUND TRUE)
++ELSEIF (QUAZIP_INCLUDE_DIRS AND QUAZIP_LIBRARIES)
+ 	# in cache already
+ 	SET(QUAZIP_FOUND TRUE)
+-ELSE (QUAZIP_INCLUDE_DIRS AND QUAZIP_LIBRARIES)
++ELSE ()
+     IF (Qt5Core_FOUND)
+         set(QUAZIP_LIB_VERSION_SUFFIX 5)
+     ENDIF()
+@@ -25,19 +29,19 @@ ELSE (QUAZIP_INCLUDE_DIRS AND QUAZIP_LIBRARIES)
+ 	ELSE(WIN32)
+ 		FIND_PACKAGE(PkgConfig)
+ #     pkg_check_modules(PC_QCA2 QUIET qca2)
+-		pkg_check_modules(PC_QUAZIP quazip quazip1-qt5)
++		pkg_check_modules(PC_QUAZIP quazip)
+ 		FIND_LIBRARY(QUAZIP_LIBRARIES
+ 			WIN32_DEBUG_POSTFIX d
+-            NAMES quazip${QUAZIP_LIB_VERSION_SUFFIX} quazip1-qt5
++            NAMES quazip${QUAZIP_LIB_VERSION_SUFFIX}
+ 			HINTS /usr/lib /usr/lib64
+ 		)
+ 		FIND_PATH(QUAZIP_INCLUDE_DIR quazip.h
+ 			HINTS /usr/include /usr/local/include
+-			PATH_SUFFIXES quazip${QUAZIP_LIB_VERSION_SUFFIX} QuaZip-Qt5-1.0/quazip
++			PATH_SUFFIXES quazip${QUAZIP_LIB_VERSION_SUFFIX}
+ 		)
+ 		FIND_PATH(QUAZIP_ZLIB_INCLUDE_DIR zlib.h HINTS /usr/include /usr/local/include)
+ 	ENDIF (WIN32)
+ 	INCLUDE(FindPackageHandleStandardArgs)
+ 	SET(QUAZIP_INCLUDE_DIRS ${QUAZIP_INCLUDE_DIR} ${QUAZIP_ZLIB_INCLUDE_DIR})
+ 	find_package_handle_standard_args(QUAZIP DEFAULT_MSG  QUAZIP_LIBRARIES QUAZIP_INCLUDE_DIR QUAZIP_ZLIB_INCLUDE_DIR QUAZIP_INCLUDE_DIRS)
+-ENDIF (QUAZIP_INCLUDE_DIRS AND QUAZIP_LIBRARIES)
++ENDIF ()
+-- 
+GitLab
