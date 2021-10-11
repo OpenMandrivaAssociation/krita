@@ -11,8 +11,8 @@ Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
 Version: 5.0.0
-Release: 0.beta1.0
-Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}-beta1.tar.xz
+Release: 0.beta2.0
+Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}-beta2.tar.xz
 Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
 #Patch0:	krita-4.4.2-OpenMandriva-fix-build-with-OpenGLES-aarch64-and-armvhnl.patch
@@ -111,7 +111,7 @@ from scratch by masters. It supports concept art, creation of comics
 and textures for rendering.
 
 %prep
-%autosetup -p1 -n %{name}-%{version}-beta1
+%autosetup -p1 -n %{name}-%{version}-beta2
 
 # We need to use the system version
 rm cmake/modules/FindQuaZip.cmake
