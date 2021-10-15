@@ -8,7 +8,7 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 4.4.7
+Version: 4.4.8
 Release: 1
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source1000: %{name}.rpmlintrc
@@ -17,6 +17,10 @@ Source1000: %{name}.rpmlintrc
 #endif
 Patch0:	krita-4.4.3-find-quazip-1.1.patch
 Patch1: krita-4.4.3-libstdc++-11.patch
+
+#Upstream patch
+Patch10:	4523-Support-building-with-OpenEXR-3.patch
+
 Summary: Sketching and painting program
 URL: http://krita.org/
 License: GPL
