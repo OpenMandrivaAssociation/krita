@@ -148,10 +148,12 @@ rm -f %{buildroot}%{_datadir}/color-schemes/Breeze*.colors
 %files -f krita.lang
 %config %{_sysconfdir}/xdg/kritarc
 %{_bindir}/krita
+%{_bindir}/kritarunner
 %{_bindir}/krita_version
 %{_datadir}/metainfo/org.kde.krita.appdata.xml
 %{_datadir}/applications/*
 %{_libdir}/libkrita*.so*
+%{_libdir}/krita-python-libs/
 %dir %{_libdir}/kritaplugins
 %{_libdir}/kritaplugins/*.so
 %{_libdir}/qt5/qml/org/krita
