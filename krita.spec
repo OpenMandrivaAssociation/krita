@@ -8,7 +8,7 @@
 Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
-Version: 4.4.7
+Version: 4.4.8
 Release: 1
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source1000: %{name}.rpmlintrc
@@ -17,6 +17,10 @@ Source1000: %{name}.rpmlintrc
 #endif
 Patch0:	krita-4.4.3-find-quazip-1.1.patch
 Patch1: krita-4.4.3-libstdc++-11.patch
+
+#Upstream patch
+Patch10:	4523-Support-building-with-OpenEXR-3.patch
+
 Summary: Sketching and painting program
 URL: http://krita.org/
 License: GPL
@@ -53,7 +57,7 @@ BuildRequires: cmake(QuaZip-Qt5)
 BuildRequires: cmake(Vc)
 %endif
 BuildRequires: boost-devel
-BuildRequires: pkgconfig(python3)
+BuildRequires: pkgconfig(python)
 BuildRequires: pkgconfig(eigen3)
 BuildRequires: pkgconfig(exiv2)
 BuildRequires: pkgconfig(fftw3)
@@ -68,9 +72,11 @@ BuildRequires: pkgconfig(libtiff-4)
 BuildRequires: pkgconfig(libraw)
 BuildRequires: pkgconfig(libraw_r)
 BuildRequires: pkgconfig(shared-mime-info)
-%ifnarch %{armx}
-BuildRequires: pkgconfig(OpenColorIO)
-%endif
+# Krita in 4.4.X is not compatibile with OpenColorIO v2.
+# Version 5.0.0 beta1 add support for compiling with OCIO v2 but still not runtime. Need wait for another beta.
+# Until then, we use compat package with OpenColorIO v1 to allow compiling current 4.4.8 Krita.
+# Please do not backport Krita or OCIO to Lx 4.2 or Rolling.
+BuildRequires: pkgconfig(OpenColorIO) < 2
 BuildRequires: pkgconfig(poppler-qt5)
 BuildRequires: pkgconfig(xcb-util)
 BuildRequires: pkgconfig(zlib)
@@ -140,10 +146,12 @@ rm -f %{buildroot}%{_datadir}/color-schemes/Breeze*.colors
 %files -f krita.lang
 %config %{_sysconfdir}/xdg/kritarc
 %{_bindir}/krita
+%{_bindir}/kritarunner
 %{_bindir}/krita_version
 %{_datadir}/metainfo/org.kde.krita.appdata.xml
 %{_datadir}/applications/*
 %{_libdir}/libkrita*.so*
+%{_libdir}/krita-python-libs/
 %dir %{_libdir}/kritaplugins
 %{_libdir}/kritaplugins/*.so
 %{_libdir}/qt5/qml/org/krita
