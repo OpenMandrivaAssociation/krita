@@ -76,7 +76,9 @@ BuildRequires: pkgconfig(shared-mime-info)
 # Version 5.0.0 beta1 add support for compiling with OCIO v2 but still not runtime. Need wait for another beta.
 # Until then, we use compat package with OpenColorIO v1 to allow compiling current 4.4.8 Krita.
 # Please do not backport Krita or OCIO to Lx 4.2 or Rolling.
+%ifnarch %{armx}
 BuildRequires: pkgconfig(OpenColorIO) < 2
+%endif
 BuildRequires: pkgconfig(poppler-qt5)
 BuildRequires: pkgconfig(xcb-util)
 BuildRequires: pkgconfig(zlib)
