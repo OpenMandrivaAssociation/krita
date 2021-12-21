@@ -9,7 +9,7 @@ Name: krita
 # Needs to match/outnumber calligra
 Epoch: 16
 Version: 4.4.8
-Release: 2
+Release: 3
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
@@ -17,6 +17,8 @@ Source1000: %{name}.rpmlintrc
 #endif
 Patch0:	krita-4.4.3-find-quazip-1.1.patch
 Patch1: krita-4.4.3-libstdc++-11.patch
+# Fix build with SSE
+Patch2: krita-4.4.8-sse-compile.patch
 
 #Upstream patch
 Patch10:	4523-Support-building-with-OpenEXR-3.patch
@@ -127,6 +129,12 @@ rm cmake/modules/FindQuaZip.cmake
 # Looks like krita want to build with c++11 and this cause issue, to fix we need force c++14 here (angry)
 # Fix stolen from https://bugs.gentoo.org/728744
 sed -e "/CMAKE_CXX_STANDARD/s/11/14/" -i CMakeLists.txt || die
+
+%ifarch znver1
+# krita uses gcc-isms to take advantage of SSE
+export CC=gcc
+export CXX=g++
+%endif
 
 %cmake_kde5 \
 	-DUSE_QT_XCB:BOOL=TRUE \

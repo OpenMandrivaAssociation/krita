@@ -1,0 +1,13 @@
+diff -up krita-4.4.8/libs/pigment/compositeops/KoOptimizedCompositeOpOver32.h.omv~ krita-4.4.8/libs/pigment/compositeops/KoOptimizedCompositeOpOver32.h
+--- krita-4.4.8/libs/pigment/compositeops/KoOptimizedCompositeOpOver32.h.omv~	2021-12-21 23:12:16.799036713 +0100
++++ krita-4.4.8/libs/pigment/compositeops/KoOptimizedCompositeOpOver32.h	2021-12-21 23:12:31.418989228 +0100
+@@ -21,6 +21,9 @@
+ #ifndef KOOPTIMIZEDCOMPOSITEOPOVER32_H_
+ #define KOOPTIMIZEDCOMPOSITEOPOVER32_H_
+ 
++#ifdef __SSE__
++#include <xmmintrin.h>
++#endif
+ #include "KoCompositeOpBase.h"
+ #include "KoCompositeOpRegistry.h"
+ #include "KoStreamedMath.h"
