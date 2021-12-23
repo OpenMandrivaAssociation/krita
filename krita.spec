@@ -6,10 +6,8 @@
 %define _disable_lto 1
 
 Name: krita
-# Needs to match/outnumber calligra
-Epoch: 16
-Version: 4.4.8
-Release: 3
+Version: 5.0.0
+Release: 1
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
@@ -21,7 +19,7 @@ Patch1: krita-4.4.3-libstdc++-11.patch
 Patch2: krita-4.4.8-sse-compile.patch
 
 #Upstream patch
-Patch10:	4523-Support-building-with-OpenEXR-3.patch
+#Patch10:	4523-Support-building-with-OpenEXR-3.patch
 
 Summary: Sketching and painting program
 URL: http://krita.org/
@@ -150,6 +148,10 @@ export CXXFLAGS="%{optflags} -DHAS_ONLY_OPENGL_ES"
 %ninja_install -C build -w dupbuild=warn
 # We get those from breeze...
 rm -f %{buildroot}%{_datadir}/color-schemes/Breeze*.colors
+# Currently nothing uses Krita headers, so we don't need them
+rm -rf %{buildroot}%{_includedir}
+# This isn't an AppImage, so we don't need the update dummy
+rm -f %{buildroot}%{_bindir}/AppImageUpdateDummy
 
 %find_lang krita || touch krita.lang
 
