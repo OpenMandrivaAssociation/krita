@@ -77,7 +77,7 @@ BuildRequires: pkgconfig(shared-mime-info)
 # Until then, we use compat package with OpenColorIO v1 to allow compiling current 4.4.8 Krita.
 # Please do not backport Krita or OCIO to Lx 4.2 or Rolling.
 %ifnarch %{armx}
-BuildRequires: pkgconfig(OpenColorIO) < 2
+BuildRequires: pkgconfig(OpenColorIO) >= 2
 %endif
 BuildRequires: pkgconfig(poppler-qt5)
 BuildRequires: pkgconfig(xcb-util)
@@ -85,8 +85,7 @@ BuildRequires: pkgconfig(zlib)
 BuildRequires: gmic-devel
 BuildRequires: atomic-devel
 # Optional -- for EXR file format support
-BuildRequires: pkgconfig(IlmBase)
-BuildRequires: pkgconfig(OpenEXR)
+BuildRequires: pkgconfig(OpenEXR) >= 3.0.0
 BuildRequires: pkgconfig(gsl)
 BuildRequires: giflib-devel
 BuildRequires: python-qt5-devel
