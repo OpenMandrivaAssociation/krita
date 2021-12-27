@@ -1,4 +1,5 @@
 %define _python_bytecompile_errors_terminate_build 0
+%define _disable_ld_no_undefined 1
 
 %define stable %([ -n "%{?beta:%{beta}}" ] && echo -n un; echo -n stable)
 # See rpmlintrc for reason
