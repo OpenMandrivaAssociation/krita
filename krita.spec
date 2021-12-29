@@ -130,10 +130,6 @@ rm cmake/modules/FindQuaZip.cmake
 # Fix stolen from https://bugs.gentoo.org/728744
 sed -e "/CMAKE_CXX_STANDARD/s/11/14/" -i CMakeLists.txt || die
 
-%ifarch %{x86_64}
-# We don't need the Scalar version, x86_64 implies SSE2
-sed -i -e 's,Scalar SSE2,SSE2,g' CMakeLists.txt
-%endif
 %cmake_kde5 \
 	-DUSE_QT_XCB:BOOL=TRUE \
 	-G Ninja
