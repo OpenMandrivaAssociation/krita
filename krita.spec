@@ -17,6 +17,7 @@ Patch0:	krita-4.4.3-find-quazip-1.1.patch
 Patch1: krita-4.4.3-libstdc++-11.patch
 # Fix build with SSE
 Patch2: krita-4.4.8-sse-compile.patch
+Patch3: krita-5.0.0-fix-libatomic-linkage.patch
 
 #Upstream patch
 #Patch10:	4523-Support-building-with-OpenEXR-3.patch
@@ -34,6 +35,7 @@ BuildRequires: cmake(Qt5Network)
 BuildRequires: cmake(Qt5PrintSupport)
 BuildRequires: cmake(Qt5Quick)
 BuildRequires: cmake(Qt5Svg)
+BuildRequires: cmake(Qt5Sql)
 BuildRequires: cmake(Qt5Test)
 BuildRequires: cmake(Qt5QuickWidgets)
 BuildRequires: cmake(Qt5Widgets)
@@ -57,6 +59,7 @@ BuildRequires: cmake(QuaZip-Qt5)
 BuildRequires: cmake(Vc)
 %endif
 BuildRequires: boost-devel
+BuildRequires: %{_lib}atomic-devel
 BuildRequires: pkgconfig(python)
 BuildRequires: pkgconfig(eigen3)
 BuildRequires: pkgconfig(exiv2)
@@ -127,12 +130,10 @@ rm cmake/modules/FindQuaZip.cmake
 # Fix stolen from https://bugs.gentoo.org/728744
 sed -e "/CMAKE_CXX_STANDARD/s/11/14/" -i CMakeLists.txt || die
 
-%ifarch znver1
-# krita uses gcc-isms to take advantage of SSE
-export CC=gcc
-export CXX=g++
+%ifarch %{x86_64}
+# We don't need the Scalar version, x86_64 implies SSE2
+sed -i -e 's,Scalar SSE2,SSE2,g' CMakeLists.txt
 %endif
-
 %cmake_kde5 \
 	-DUSE_QT_XCB:BOOL=TRUE \
 	-G Ninja
