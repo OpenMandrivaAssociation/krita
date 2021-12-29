@@ -1,0 +1,11 @@
+diff -up krita-5.0.0/libs/image/CMakeLists.txt.omv~ krita-5.0.0/libs/image/CMakeLists.txt
+--- krita-5.0.0/libs/image/CMakeLists.txt.omv~	2021-12-24 18:05:49.733790872 +0100
++++ krita-5.0.0/libs/image/CMakeLists.txt	2021-12-24 18:06:01.989834923 +0100
+@@ -367,6 +367,7 @@ target_link_libraries(kritaimage
+         kritametadata
+         kritaresources
+         Qt5::Concurrent
++	atomic
+ )
+ 
+ target_link_libraries(kritaimage PUBLIC ${Boost_SYSTEM_LIBRARY})
