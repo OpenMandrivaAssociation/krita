@@ -6,7 +6,7 @@
 %define _disable_lto 1
 
 Name: krita
-Version: 5.0.0
+Version: 5.0.2
 Release: 1
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source1000: %{name}.rpmlintrc
