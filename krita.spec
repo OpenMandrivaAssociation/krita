@@ -3,11 +3,11 @@
 %define stable %([ -n "%{?beta:%{beta}}" ] && echo -n un; echo -n stable)
 # See rpmlintrc for reason
 %define __requires_exclude 'devel.*'
-%define _disable_lto 1
+#define _disable_lto 1
 
 Name: krita
 Version: 5.0.2
-Release: 1
+Release: 2
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
