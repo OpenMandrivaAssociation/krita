@@ -1,0 +1,12 @@
+diff -up krita-5.0.2/3rdparty_plugins/ext_gmic/CMakeLists.txt.omv~ krita-5.0.2/3rdparty_plugins/ext_gmic/CMakeLists.txt
+--- krita-5.0.2/3rdparty_plugins/ext_gmic/CMakeLists.txt.omv~	2022-01-26 13:35:51.839179305 +0100
++++ krita-5.0.2/3rdparty_plugins/ext_gmic/CMakeLists.txt	2022-01-26 23:00:04.088241206 +0100
+@@ -9,7 +9,7 @@ ExternalProject_Add( ext_gmic
+ 
+     INSTALL_DIR ${PREFIX_ext_gmic}
+ 
+-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${PREFIX_ext_gmic} -DGMIC_QT_HOST=krita-plugin -DCMAKE_BUILD_TYPE=${GLOBAL_BUILD_TYPE} ${GLOBAL_PROFILE}
++    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${PREFIX_ext_gmic} -DGMIC_QT_HOST=krita-plugin -DCMAKE_BUILD_TYPE=${GLOBAL_BUILD_TYPE} ${GLOBAL_PROFILE} -DKIS_IMAGE_INTERFACE_DIR=${INSTALL_ROOT}/include/
+     LIST_SEPARATOR "|"
+ 
+     UPDATE_COMMAND ""

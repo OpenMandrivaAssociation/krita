@@ -1,0 +1,31 @@
+From 25f67fc173b3d425113bea67a46078dbd9b59a3c Mon Sep 17 00:00:00 2001
+From: "L. E. Segovia" <amy@amyspark.me>
+Date: Thu, 23 Dec 2021 14:16:43 -0300
+Subject: [PATCH] Update G'MIC to 3.0.0 patch 2
+
+BUG: 447286
+
+BUG: 447290
+(cherry picked from commit 0aced718ebe7845d26e4a881f0ef6cc139c6abe5)
+---
+ 3rdparty_plugins/ext_gmic/CMakeLists.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/3rdparty_plugins/ext_gmic/CMakeLists.txt b/3rdparty_plugins/ext_gmic/CMakeLists.txt
+index f45f12ab83..3c196ea565 100644
+--- a/3rdparty_plugins/ext_gmic/CMakeLists.txt
++++ b/3rdparty_plugins/ext_gmic/CMakeLists.txt
+@@ -2,8 +2,8 @@ SET(PREFIX_ext_gmic "${EXTPREFIX}" )
+ 
+ ExternalProject_Add( ext_gmic
+     DOWNLOAD_DIR ${EXTERNALS_DOWNLOAD_DIR}
+-    URL https://files.kde.org/krita/build/dependencies/gmic-3.0.0.1-patched.tar.gz
+-    URL_HASH SHA256=05e25367af01039a97c52d48694f00daf36ee180fa68220f72522aaf245a782b
++    URL https://files.kde.org/krita/build/dependencies/gmic-3.0.0.2-patched.tar.gz
++    URL_HASH SHA256=22d4104fb83f6c9f4d6045ba3cd634e3df1995a803890f56199ed8664fe463b6
+ 
+     SOURCE_SUBDIR gmic-qt
+ 
+-- 
+GitLab
+

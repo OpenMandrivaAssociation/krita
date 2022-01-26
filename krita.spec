@@ -7,8 +7,10 @@
 
 Name: krita
 Version: 5.0.2
-Release: 2
+Release: 3
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
+# The krita plugin requires a patched version of gmic
+Source1: https://files.kde.org/krita/build/dependencies/gmic-3.0.0.2-patched.tar.gz
 Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
 #Patch0:	krita-4.4.2-OpenMandriva-fix-build-with-OpenGLES-aarch64-and-armvhnl.patch
@@ -18,6 +20,10 @@ Patch1: krita-4.4.3-libstdc++-11.patch
 # Fix build with SSE
 Patch2: krita-4.4.8-sse-compile.patch
 Patch3: krita-5.0.0-fix-libatomic-linkage.patch
+# Update gmic
+Patch4: https://invent.kde.org/graphics/krita/-/commit/25f67fc173b3d425113bea67a46078dbd9b59a3c.patch
+# And make it compile
+Patch5: krita-5.0.2-gmic-compile.patch
 
 #Upstream patch
 #Patch10:	4523-Support-building-with-OpenEXR-3.patch
@@ -86,6 +92,8 @@ BuildRequires: pkgconfig(poppler-qt5)
 BuildRequires: pkgconfig(xcb-util)
 BuildRequires: pkgconfig(zlib)
 BuildRequires: gmic-devel
+# for gmic
+BuildRequires: pkgconfig(libavcodec)
 BuildRequires: atomic-devel
 # Optional -- for EXR file format support
 BuildRequires: pkgconfig(OpenEXR) >= 3.0.0
@@ -132,6 +140,7 @@ sed -e "/CMAKE_CXX_STANDARD/s/11/14/" -i CMakeLists.txt || die
 
 %cmake_kde5 \
 	-DUSE_QT_XCB:BOOL=TRUE \
+	-DENABLE_BSYMBOLICFUNCTIONS:BOOL=TRUE \
 	-G Ninja
 
 %build
@@ -142,6 +151,23 @@ export CXXFLAGS="%{optflags} -DHAS_ONLY_OPENGL_ES"
 
 %install
 %ninja_install -C build -w dupbuild=warn
+
+# Not very nice to do additional builds here, but
+# the gmic plugin requires a krita installation in
+# a buildroot to locate headers etc.
+mkdir build-plugins
+cd build-plugins
+cmake \
+	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
+	-DCMAKE_INSTALL_LIBDIR=%{_lib} \
+	-DKDE_INSTALL_USE_QT_SYS_PATHS:BOOL=TRUE \
+	-DEXTERNALS_DOWNLOAD_DIR=%{_sourcedir} \
+	-DINSTALL_ROOT=%{buildroot}%{_prefix} \
+	-G Ninja \
+	../3rdparty_plugins
+%ninja_build
+cd -
+
 # We get those from breeze...
 rm -f %{buildroot}%{_datadir}/color-schemes/Breeze*.colors
 # Currently nothing uses Krita headers, so we don't need them
