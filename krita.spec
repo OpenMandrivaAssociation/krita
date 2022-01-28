@@ -7,7 +7,7 @@
 
 Name: krita
 Version: 5.0.2
-Release: 3
+Release: 4
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 # The krita plugin requires a patched version of gmic
 Source1: https://files.kde.org/krita/build/dependencies/gmic-3.0.0.2-patched.tar.gz
@@ -115,6 +115,8 @@ Obsoletes: %{_lib}kritacolord < %{EVRD}
 Obsoletes: %{_lib}kritacolor14 < %{EVRD}
 Obsoletes: %{_lib}kritalibpaintop14 < %{EVRD}
 Obsoletes: %{_lib}kritaui14 < %{EVRD}
+# This used to be part of gmic, it's now part of krita
+%rename krita-plugin-gmic
 
 %define langlist af ar ast be bg br bs ca cs cy da de el en_GB eo es et eu fa fi fr fy ga gl he hi hne hr hu ia is it ja kk km ko lt lv mai mk mr ms nb nds ne nl nn oc pa pl pt pt_BR ro ru se sk sl sq sv ta tg th tr ug uk uz vi wa xh zh_CN zh_TW
 
