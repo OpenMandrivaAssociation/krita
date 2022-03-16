@@ -69,7 +69,7 @@ BuildRequires: %{_lib}atomic-devel
 BuildRequires: pkgconfig(python)
 BuildRequires: pkgconfig(eigen3)
 BuildRequires: pkgconfig(exiv2)
-BuildRequires: pkgconfig(fftw)
+BuildRequires: pkgconfig(fftw3)
 BuildRequires: pkgconfig(gsl)
 BuildRequires: pkgconfig(lcms2)
 BuildRequires: pkgconfig(libpng)
