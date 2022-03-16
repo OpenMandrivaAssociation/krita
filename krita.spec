@@ -7,7 +7,7 @@
 
 Name: krita
 Version: 5.0.2
-Release: 4
+Release: 5
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 # The krita plugin requires a patched version of gmic
 Source1: https://files.kde.org/krita/build/dependencies/gmic-3.0.0.2-patched.tar.gz
@@ -69,7 +69,7 @@ BuildRequires: %{_lib}atomic-devel
 BuildRequires: pkgconfig(python)
 BuildRequires: pkgconfig(eigen3)
 BuildRequires: pkgconfig(exiv2)
-BuildRequires: pkgconfig(fftw3)
+BuildRequires: pkgconfig(fftw)
 BuildRequires: pkgconfig(gsl)
 BuildRequires: pkgconfig(lcms2)
 BuildRequires: pkgconfig(libpng)
