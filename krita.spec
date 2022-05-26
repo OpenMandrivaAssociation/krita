@@ -6,11 +6,11 @@
 #define _disable_lto 1
 
 Name: krita
-Version: 5.0.2
-Release: 6
+Version: 5.0.8
+Release: 1
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 # The krita plugin requires a patched version of gmic
-Source1: https://files.kde.org/krita/build/dependencies/gmic-3.0.0.2-patched.tar.gz
+Source1: https://github.com/amyspark/gmic/releases/download/v3.0.2.2/gmic-3.0.2.2-patched.tar.gz
 Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
 #Patch0:	krita-4.4.2-OpenMandriva-fix-build-with-OpenGLES-aarch64-and-armvhnl.patch
@@ -20,8 +20,6 @@ Patch1: krita-4.4.3-libstdc++-11.patch
 # Fix build with SSE
 Patch2: krita-4.4.8-sse-compile.patch
 Patch3: krita-5.0.0-fix-libatomic-linkage.patch
-# Update gmic
-Patch4: https://invent.kde.org/graphics/krita/-/commit/25f67fc173b3d425113bea67a46078dbd9b59a3c.patch
 # And make it compile
 Patch5: krita-5.0.2-gmic-compile.patch
 
@@ -91,7 +89,6 @@ BuildRequires: pkgconfig(OpenColorIO) >= 2
 BuildRequires: pkgconfig(poppler-qt5)
 BuildRequires: pkgconfig(xcb-util)
 BuildRequires: pkgconfig(zlib)
-BuildRequires: gmic-devel
 # for gmic
 BuildRequires: pkgconfig(libavcodec)
 BuildRequires: atomic-devel
@@ -198,3 +195,4 @@ rm -f %{buildroot}%{_bindir}/AppImageUpdateDummy
 %{_datadir}/kritaplugins
 %{_datadir}/color/icc/krita
 %{_datadir}/color-schemes/Krita*.colors
+%{_datadir}/gmic
