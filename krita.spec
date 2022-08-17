@@ -6,19 +6,17 @@
 #define _disable_lto 1
 
 Name: krita
-Version: 5.0.8
-Release: 3
+Version: 5.1.0
+Release: 1
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 # The krita plugin requires a patched version of gmic
-Source1: https://github.com/amyspark/gmic/releases/download/v3.0.2.2/gmic-3.0.2.2-patched.tar.gz
+Source1: https://github.com/amyspark/gmic/releases/download/v3.1.4.2/gmic-3.1.4.2-patched.tar.xz
 Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
 #Patch0:	krita-4.4.2-OpenMandriva-fix-build-with-OpenGLES-aarch64-and-armvhnl.patch
 #endif
-Patch0:	krita-4.4.3-find-quazip-1.1.patch
-Patch1: krita-4.4.3-libstdc++-11.patch
 # Fix build with SSE
-Patch2: krita-4.4.8-sse-compile.patch
+#Patch2: krita-4.4.8-sse-compile.patch
 Patch3: krita-5.0.0-fix-libatomic-linkage.patch
 # And make it compile
 Patch5: krita-5.0.2-gmic-compile.patch
@@ -57,6 +55,10 @@ BuildRequires: cmake(KF5ItemViews)
 BuildRequires: cmake(KF5WindowSystem)
 BuildRequires: cmake(KF5KIO)
 BuildRequires: cmake(KF5Crash)
+#BuildRequires: cmake(KSeExpr)
+# FIXME figure out why -- doesn't look like anything is
+# actually insane enough to link libjpeg statically
+BuildRequires: jpeg-static-devel
 BuildRequires: cmake(QuaZip-Qt5)
 # x86 package
 %ifarch %{ix86} %{x86_64}
@@ -126,17 +128,6 @@ and textures for rendering.
 
 %prep
 %autosetup -p1 -n %{name}-%{version}%{?beta:%{beta}}
-
-# We need to use the system version
-rm cmake/modules/FindQuaZip.cmake
-
-# As of Krita 4.3.0 and boost 1.73, krita failed to build due error: 
-# /usr/include/boost/geometry/index/detail/rtree/node/variant_visitor.hpp:51:5: error: no matching function for call to 'apply_visitor'
-# boost::apply_visitor(v, n);
-# Looks like krita want to build with c++11 and this cause issue, to fix we need force c++14 here (angry)
-# Fix stolen from https://bugs.gentoo.org/728744
-sed -e "/CMAKE_CXX_STANDARD/s/11/14/" -i CMakeLists.txt || die
-
 %cmake_kde5 \
 	-DUSE_QT_XCB:BOOL=TRUE \
 	-DENABLE_BSYMBOLICFUNCTIONS:BOOL=TRUE \
