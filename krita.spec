@@ -7,7 +7,7 @@
 
 Name: krita
 Version: 5.1.0
-Release: 1
+Release: 2
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 # The krita plugin requires a patched version of gmic
 Source1: https://github.com/amyspark/gmic/releases/download/v3.1.4.3/gmic-3.1.4.3-patched.tar.xz
