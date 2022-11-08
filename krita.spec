@@ -6,7 +6,7 @@
 #define _disable_lto 1
 
 Name: krita
-Version: 5.1.2
+Version: 5.1.3
 Release: 1
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 # The krita plugin requires a patched version of gmic
