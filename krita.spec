@@ -7,7 +7,7 @@
 
 Name: krita
 Version: 5.1.4
-Release: 1
+Release: 2
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 # The krita plugin requires a patched version of gmic
 Source1: https://github.com/amyspark/gmic/releases/download/v3.1.5.1/gmic-3.1.5.1-patched.tar.xz
@@ -15,6 +15,7 @@ Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
 #Patch0:	krita-4.4.2-OpenMandriva-fix-build-with-OpenGLES-aarch64-and-armvhnl.patch
 #endif
+Patch1: https://invent.kde.org/graphics/krita/-/commit/e753d2453d1614b65b288e49fa5d5371764feaa8.patch
 # Fix build with SSE
 #Patch2: krita-4.4.8-sse-compile.patch
 Patch3: krita-5.0.0-fix-libatomic-linkage.patch
