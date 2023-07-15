@@ -7,10 +7,10 @@
 
 Name: krita
 Version: 5.1.5
-Release: 8
+Release: 9
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 # The krita plugin requires a patched version of gmic
-Source1: https://github.com/amyspark/gmic/archive/refs/tags/v3.1.6.1.tar.gz
+Source1: https://github.com/amyspark/gmic/archive/refs/tags/v3.2.4.1.tar.gz
 Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
 #Patch0:	krita-4.4.2-OpenMandriva-fix-build-with-OpenGLES-aarch64-and-armvhnl.patch
@@ -21,6 +21,9 @@ Patch3: krita-5.0.0-fix-libatomic-linkage.patch
 # And make it compile
 Patch5: krita-5.0.2-gmic-compile.patch
 Patch6:	krita-5.1.5-exiv2-0.28.patch
+# This is needed because discover (as of 5.27.6) barfs on tags inside <caption>
+# It should be removed if and when discover can deal with links inside caption.
+Patch7: metadata-no-links.patch
 
 #Upstream patch
 #Patch10:	4523-Support-building-with-OpenEXR-3.patch
