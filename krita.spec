@@ -58,6 +58,9 @@ BuildRequires: cmake(KF5ItemViews)
 BuildRequires: cmake(KF5WindowSystem)
 BuildRequires: cmake(KF5KIO)
 BuildRequires: cmake(KF5Crash)
+BuildRequires: cmake(KF5KDcraw)
+BuildRequires: cmake(Mlt7)
+BuildRequires: pkgconfig(libwebp)
 #BuildRequires: cmake(KSeExpr)
 # FIXME figure out why -- doesn't look like anything is
 # actually insane enough to link libjpeg statically
@@ -82,11 +85,13 @@ BuildRequires: pkgconfig(lcms2)
 BuildRequires: pkgconfig(libpng)
 BuildRequires: pkgconfig(xi)
 BuildRequires: pkgconfig(libjpeg)
+BuildRequires: pkgconfig(libjxl)
 BuildRequires: pkgconfig(libopenjp2)
 BuildRequires: pkgconfig(libcurl)
 BuildRequires: pkgconfig(libtiff-4)
 BuildRequires: pkgconfig(libraw)
 BuildRequires: pkgconfig(libraw_r)
+BuildRequires: pkgconfig(freetype2)
 BuildRequires: pkgconfig(shared-mime-info)
 # Krita in 4.4.X is not compatibile with OpenColorIO v2.
 # Version 5.0.0 beta1 add support for compiling with OCIO v2 but still not runtime. Need wait for another beta.
