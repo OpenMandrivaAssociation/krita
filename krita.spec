@@ -60,6 +60,7 @@ BuildRequires: cmake(KF5KIO)
 BuildRequires: cmake(KF5Crash)
 BuildRequires: cmake(KF5KDcraw)
 BuildRequires: cmake(Mlt7)
+BuildRequires: cmake(SDL2)
 BuildRequires: pkgconfig(libwebp)
 #BuildRequires: cmake(KSeExpr)
 # FIXME figure out why -- doesn't look like anything is
