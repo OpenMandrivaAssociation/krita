@@ -1,7 +1,7 @@
-diff -up krita-5.1.5/krita/org.kde.krita.appdata.xml.omv~ krita-5.1.5/krita/org.kde.krita.appdata.xml
---- krita-5.1.5/krita/org.kde.krita.appdata.xml.omv~	2023-07-15 02:02:55.431817110 +0200
-+++ krita-5.1.5/krita/org.kde.krita.appdata.xml	2023-07-15 02:10:03.045107619 +0200
-@@ -516,30 +516,30 @@
+diff -up krita-5.2.0/krita/org.kde.krita.appdata.xml.3~ krita-5.2.0/krita/org.kde.krita.appdata.xml
+--- krita-5.2.0/krita/org.kde.krita.appdata.xml.3~	2023-10-05 14:05:44.899009593 +0200
++++ krita-5.2.0/krita/org.kde.krita.appdata.xml	2023-10-05 14:06:59.549798578 +0200
+@@ -529,32 +529,32 @@
        <image>https://cdn.kde.org/screenshots/krita/youtube.png</image>
      </screenshot>
      <screenshot>
@@ -14,9 +14,11 @@ diff -up krita-5.1.5/krita/org.kde.krita.appdata.xml.omv~ krita-5.1.5/krita/org.
 -      <caption xml:lang="en-GB">Or the active <a href="https://krita-artists.org">Krita Artists community</a></caption>
 -      <caption xml:lang="es">O al activo <a href="https://krita-artists.org">La comunidad de artistas de Krita</a></caption>
 -      <caption xml:lang="eu">Edo <a href="https://krita-artists.org">Krita Artisten komunitatea</a> aktiboa</caption>
+-      <caption xml:lang="fi">Tai aktiivinen <a href="https://krita-artists.org">Krita-taiteilijayhteisö</a></caption>
 -      <caption xml:lang="fr">Ou l'active <a href="https://krita-artists.org">La communauté d'artistes de Krita</a></caption>
 -      <caption xml:lang="id">Atau <a href="https://krita-artists.org">Komunitas Pelukis Krita</a> yang aktif</caption>
 -      <caption xml:lang="it">O l'attiva <a href="https://krita-artists.org">Comunità degli Artisti di Krita</a></caption>
+-      <caption xml:lang="ka">ან აქტიური <a href="https://krita-artists.org">Krita -ის ხელვნების საზოგადოება</a></caption>
 -      <caption xml:lang="nl">Of het actieve <a href="https://krita-artists.org">Krita-artiestengemeenschap</a></caption>
 -      <caption xml:lang="nn">Eller det populære <a href="https://krita-artists.org">forumet for Krita-kunstnarar</a></caption>
 -      <caption xml:lang="pl">Lub aktywny <a href="https://krita-artists.org">Społeczność artystów Krity</a></caption>
@@ -38,9 +40,11 @@ diff -up krita-5.1.5/krita/org.kde.krita.appdata.xml.omv~ krita-5.1.5/krita/org.
 +      <caption xml:lang="en-GB">Or the active Krita Artists community</caption>
 +      <caption xml:lang="es">O al activo La comunidad de artistas de Krita</caption>
 +      <caption xml:lang="eu">Edo Krita Artisten komunitatea aktiboa</caption>
++      <caption xml:lang="fi">Tai aktiivinen Krita-taiteilijayhteisö</caption>
 +      <caption xml:lang="fr">Ou l'active La communauté d'artistes de Krita</caption>
 +      <caption xml:lang="id">Atau Komunitas Pelukis Krita yang aktif</caption>
 +      <caption xml:lang="it">O l'attiva Comunità degli Artisti di Krita</caption>
++      <caption xml:lang="ka">ან აქტიური Krita -ის ხელვნების საზოგადოება</caption>
 +      <caption xml:lang="nl">Of het actieve Krita-artiestengemeenschap</caption>
 +      <caption xml:lang="nn">Eller det populære forumet for Krita-kunstnarar</caption>
 +      <caption xml:lang="pl">Lub aktywny Społeczność artystów Krity</caption>

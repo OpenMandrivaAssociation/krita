@@ -6,8 +6,8 @@
 #define _disable_lto 1
 
 Name: krita
-Version: 5.1.5
-Release: 9
+Version: 5.2.0
+Release: 1
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 # The krita plugin requires a patched version of gmic
 Source1: https://github.com/amyspark/gmic/archive/refs/tags/v3.2.4.1.tar.gz
@@ -20,7 +20,6 @@ Source1000: %{name}.rpmlintrc
 Patch3: krita-5.0.0-fix-libatomic-linkage.patch
 # And make it compile
 Patch5: krita-5.0.2-gmic-compile.patch
-Patch6:	krita-5.1.5-exiv2-0.28.patch
 # This is needed because discover (as of 5.27.6) barfs on tags inside <caption>
 # It should be removed if and when discover can deal with links inside caption.
 Patch7: metadata-no-links.patch
@@ -68,7 +67,11 @@ BuildRequires: cmake(QuaZip-Qt5)
 %ifarch %{ix86} %{x86_64}
 BuildRequires: cmake(Vc)
 %endif
+BuildRequires: cmake(Immer)
+BuildRequires: %mklibname -d zug
+BuildRequires: %mklibname -d lager
 BuildRequires: boost-devel
+BuildRequires: pkgconfig(libunibreak)
 BuildRequires: %{_lib}atomic-devel
 BuildRequires: pkgconfig(python)
 BuildRequires: pkgconfig(eigen3)

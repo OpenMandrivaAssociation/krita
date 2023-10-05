@@ -1,11 +1,12 @@
-diff -up krita-5.0.0/libs/image/CMakeLists.txt.omv~ krita-5.0.0/libs/image/CMakeLists.txt
---- krita-5.0.0/libs/image/CMakeLists.txt.omv~	2021-12-24 18:05:49.733790872 +0100
-+++ krita-5.0.0/libs/image/CMakeLists.txt	2021-12-24 18:06:01.989834923 +0100
-@@ -367,6 +367,7 @@ target_link_libraries(kritaimage
-         kritametadata
-         kritaresources
-         Qt5::Concurrent
+diff -up krita-5.2.0/libs/image/CMakeLists.txt.1~ krita-5.2.0/libs/image/CMakeLists.txt
+--- krita-5.2.0/libs/image/CMakeLists.txt.1~	2023-10-05 13:58:33.707289895 +0200
++++ krita-5.2.0/libs/image/CMakeLists.txt	2023-10-05 14:02:26.614879921 +0200
+@@ -379,6 +379,8 @@ target_link_libraries(kritaimage
+ 
+         Eigen3::Eigen
+         Boost::boost
++
 +	atomic
  )
  
- target_link_libraries(kritaimage PUBLIC ${Boost_SYSTEM_LIBRARY})
+ if(HAVE_CXX_ATOMICS_WITH_LIB OR HAVE_CXX_ATOMICS64_WITH_LIB)
