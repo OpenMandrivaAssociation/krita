@@ -74,6 +74,7 @@ BuildRequires: cmake(Vc)
 BuildRequires: cmake(Immer)
 BuildRequires: %mklibname -d zug
 BuildRequires: %mklibname -d lager
+BuildRequires: cmake(xsimd)
 BuildRequires: boost-devel
 BuildRequires: pkgconfig(libunibreak)
 BuildRequires: %{_lib}atomic-devel
@@ -93,6 +94,7 @@ BuildRequires: pkgconfig(libtiff-4)
 BuildRequires: pkgconfig(libraw)
 BuildRequires: pkgconfig(libraw_r)
 BuildRequires: pkgconfig(freetype2)
+BuildRequires: pkgconfig(fontconfig)
 BuildRequires: pkgconfig(shared-mime-info)
 # Krita in 4.4.X is not compatibile with OpenColorIO v2.
 # Version 5.0.0 beta1 add support for compiling with OCIO v2 but still not runtime. Need wait for another beta.
