@@ -107,6 +107,7 @@ BuildRequires: pkgconfig(OpenColorIO) >= 2
 BuildRequires: pkgconfig(poppler-qt5)
 BuildRequires: pkgconfig(xcb-util)
 BuildRequires: pkgconfig(zlib)
+BuildRequires: pkgconfig(libmypaint)
 # for gmic
 BuildRequires: pkgconfig(libavcodec)
 BuildRequires: atomic-devel
