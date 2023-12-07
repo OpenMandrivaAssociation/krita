@@ -1,7 +1,7 @@
-diff -up krita-5.2.0/krita/org.kde.krita.appdata.xml.3~ krita-5.2.0/krita/org.kde.krita.appdata.xml
---- krita-5.2.0/krita/org.kde.krita.appdata.xml.3~	2023-10-05 14:05:44.899009593 +0200
-+++ krita-5.2.0/krita/org.kde.krita.appdata.xml	2023-10-05 14:06:59.549798578 +0200
-@@ -529,32 +529,32 @@
+diff -up krita-5.2.2/krita/org.kde.krita.appdata.xml.3~ krita-5.2.2/krita/org.kde.krita.appdata.xml
+--- krita-5.2.2/krita/org.kde.krita.appdata.xml.3~	2023-12-07 19:05:30.335333302 +0100
++++ krita-5.2.2/krita/org.kde.krita.appdata.xml	2023-12-07 19:07:35.240486739 +0100
+@@ -539,33 +539,33 @@
        <image>https://cdn.kde.org/screenshots/krita/youtube.png</image>
      </screenshot>
      <screenshot>
@@ -12,6 +12,7 @@ diff -up krita-5.2.0/krita/org.kde.krita.appdata.xml.3~ krita-5.2.0/krita/org.kd
 -      <caption xml:lang="cs">Nebo aktivní <a href="https://krita-artists.org">Komunita umělců Krita</a></caption>
 -      <caption xml:lang="el">Ή το ενεργό <a href="https://krita-artists.org">Η κοινότητα των καλλιτεχνών του Krita</a></caption>
 -      <caption xml:lang="en-GB">Or the active <a href="https://krita-artists.org">Krita Artists community</a></caption>
+-      <caption xml:lang="eo">Aŭ la aktiva <a href="https://krita-artists.org">Komunumo de Krita-Artistoj</a></caption>
 -      <caption xml:lang="es">O al activo <a href="https://krita-artists.org">La comunidad de artistas de Krita</a></caption>
 -      <caption xml:lang="eu">Edo <a href="https://krita-artists.org">Krita Artisten komunitatea</a> aktiboa</caption>
 -      <caption xml:lang="fi">Tai aktiivinen <a href="https://krita-artists.org">Krita-taiteilijayhteisö</a></caption>
@@ -38,6 +39,7 @@ diff -up krita-5.2.0/krita/org.kde.krita.appdata.xml.3~ krita-5.2.0/krita/org.kd
 +      <caption xml:lang="cs">Nebo aktivní Komunita umělců Krita</caption>
 +      <caption xml:lang="el">Ή το ενεργό Η κοινότητα των καλλιτεχνών του Krita</caption>
 +      <caption xml:lang="en-GB">Or the active Krita Artists community</caption>
++      <caption xml:lang="eo">Aŭ la aktiva Komunumo de Krita-Artistoj</caption>
 +      <caption xml:lang="es">O al activo La comunidad de artistas de Krita</caption>
 +      <caption xml:lang="eu">Edo Krita Artisten komunitatea aktiboa</caption>
 +      <caption xml:lang="fi">Tai aktiivinen Krita-taiteilijayhteisö</caption>
