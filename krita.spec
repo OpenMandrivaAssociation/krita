@@ -16,6 +16,7 @@ Source1000: %{name}.rpmlintrc
 #Patch0:	krita-4.4.2-OpenMandriva-fix-build-with-OpenGLES-aarch64-and-armvhnl.patch
 #endif
 Patch1: krita-5.2.2-libjxl-0.9.patch
+Patch2: https://invent.kde.org/graphics/krita/-/commit/2d71c47661d43a4e3c1ab0c27803de980bdf2bb2.patch
 # Fix build with SSE
 #Patch2: krita-4.4.8-sse-compile.patch
 Patch3: krita-5.0.0-fix-libatomic-linkage.patch
