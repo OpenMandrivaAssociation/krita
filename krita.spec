@@ -7,7 +7,7 @@
 
 Name: krita
 Version: 5.2.2
-Release: 4
+Release: 5
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 # The krita plugin requires a patched version of gmic
 Source1: https://github.com/amyspark/gmic/archive/refs/tags/v3.2.4.1.tar.gz
@@ -123,6 +123,10 @@ BuildRequires: python-qt5-gui
 BuildRequires: python-qt5-widgets
 BuildRequires: python-qt5-xml
 BuildRequires: python-sip
+Requires: qt5-database-plugin-sqlite
+Requires: python-qt5-core
+Requires: python-qt5-gui
+Requires: python-qt5-widgets
 Requires: python-qt5-xml
 
 # Those used to be separate libpackages in 2.x, but it didn't make much
