@@ -1,0 +1,21 @@
+diff -up krita-5.2.2/plugins/krita-ai-tools/segmentation/CMakeLists.txt.omv~ krita-5.2.2/plugins/krita-ai-tools/segmentation/CMakeLists.txt
+--- krita-5.2.2/plugins/krita-ai-tools/segmentation/CMakeLists.txt.omv~	2024-06-20 16:06:03.878291035 +0200
++++ krita-5.2.2/plugins/krita-ai-tools/segmentation/CMakeLists.txt	2024-06-20 16:09:09.825743331 +0200
+@@ -65,11 +65,10 @@ if(WIN32)
+     set(PACKAGE_DIR ${CMAKE_INSTALL_PREFIX}/../krita-plugin-segmentation)
+     install(DIRECTORY ${dlimgedit_SOURCE_DIR}/bin/ DESTINATION ${PACKAGE_DIR}/${BIN_INSTALL_DIR})
+     install(TARGETS kritatoolsegmentation DESTINATION ${PACKAGE_DIR}/${KRITA_PLUGIN_INSTALL_DIR})
+-else() # Linux AppImage
+-    set(PACKAGE_DIR ${CMAKE_INSTALL_PREFIX}/../krita-plugin-segmentation/usr)
+-    install(TARGETS dlimgedit DESTINATION ${PACKAGE_DIR}/lib/kritaplugins/toolsegmentation)
+-    install(DIRECTORY ${ONNXRUNTIME_LIB_DIR}/ DESTINATION ${PACKAGE_DIR}/lib/kritaplugins/toolsegmentation ${ONNX_FILTER})
+-    install(TARGETS kritatoolsegmentation DESTINATION ${PACKAGE_DIR}/lib/kritaplugins)
++else() # Linux
++    install(TARGETS dlimgedit DESTINATION ${KRITA_PLUGIN_INSTALL_DIR}/toolsegmentation)
++    install(DIRECTORY ${ONNXRUNTIME_LIB_DIR}/ DESTINATION ${KRITA_PLUGIN_INSTALL_DIR}/toolsegmentation ${ONNX_FILTER})
++    install(TARGETS kritatoolsegmentation DESTINATION ${KRITA_PLUGIN_INSTALL_DIR})
+ endif()
+-install(DIRECTORY ${dlimgedit_SOURCE_DIR}/models/ DESTINATION ${PACKAGE_DIR}/${DATA_INSTALL_DIR}/krita/ai_models ${MODELS_FILTER})
+-install(FILES segmentation_tools.action DESTINATION ${PACKAGE_DIR}/${DATA_INSTALL_DIR}/krita/actions)
++install(DIRECTORY ${dlimgedit_SOURCE_DIR}/models/ DESTINATION share/krita/ai_models ${MODELS_FILTER})
++install(FILES segmentation_tools.action DESTINATION share/krita/actions)

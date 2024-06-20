@@ -7,10 +7,13 @@
 
 Name: krita
 Version: 5.2.2
-Release: 5
+Release: 6
 Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 # The krita plugin requires a patched version of gmic
 Source1: https://github.com/amyspark/gmic/archive/refs/tags/v3.2.4.1.tar.gz
+# AI selection plugin, see https://github.com/Acly/krita-ai-tools
+Source2: https://github.com/Acly/krita-ai-tools/archive/refs/tags/v1.0.2.tar.gz
+Source3: https://github.com/Acly/dlimgedit/archive/refs/heads/main.tar.gz
 Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
 #Patch0:	krita-4.4.2-OpenMandriva-fix-build-with-OpenGLES-aarch64-and-armvhnl.patch
@@ -24,7 +27,11 @@ Patch3: krita-5.0.0-fix-libatomic-linkage.patch
 Patch5: krita-5.0.2-gmic-compile.patch
 # This is needed because discover (as of 5.27.6) barfs on tags inside <caption>
 # It should be removed if and when discover can deal with links inside caption.
-Patch7: metadata-no-links.patch
+Patch6: metadata-no-links.patch
+# Fix krita-ai-tools build...
+Patch7: krita-ai-tools-dont-download-dlimgedit.patch
+# ... and installation
+Patch8: krita-ai-tools-install-dirs.patch
 
 #Upstream patch
 #Patch10:	4523-Support-building-with-OpenEXR-3.patch
@@ -150,7 +157,17 @@ from scratch by masters. It supports concept art, creation of comics
 and textures for rendering.
 
 %prep
-%autosetup -p1 -n %{name}-%{version}%{?beta:%{beta}}
+%setup -n %{name}-%{version}%{?beta:%{beta}}
+cd plugins
+tar xf %{S:2}
+mv krita-ai-tools-* krita-ai-tools
+echo 'add_subdirectory(krita-ai-tools)' >>CMakeLists.txt
+cd krita-ai-tools
+tar xf %{S:3}
+mv dlimgedit-* dlimgedit
+cd ../..
+%autopatch -p1
+
 %cmake_kde5 \
 	-DUSE_QT_XCB:BOOL=TRUE \
 	-DENABLE_BSYMBOLICFUNCTIONS:BOOL=TRUE \
@@ -176,6 +193,7 @@ cmake \
 	-DKDE_INSTALL_USE_QT_SYS_PATHS:BOOL=TRUE \
 	-DEXTERNALS_DOWNLOAD_DIR=%{_sourcedir} \
 	-DINSTALL_ROOT=%{buildroot}%{_prefix} \
+	-DPC_xsimd_CONFIG_DIR=%{_libdir}/cmake/xsimd \
 	-G Ninja \
 	../3rdparty_plugins
 %ninja_build
