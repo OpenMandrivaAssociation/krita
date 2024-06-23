@@ -5,21 +5,26 @@
 %define __requires_exclude 'devel.*'
 #define _disable_lto 1
 
+# Need to fix a few downloaded external dependencies first
+%bcond_with aitools
+
 Name: krita
-Version: 5.2.2
-Release: 6
-Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
+Version: 5.2.3
+Release: 1
+#Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
+Source0: https://invent.kde.org/graphics/krita/-/archive/v%{version}/krita-v%{version}.tar.bz2
 # The krita plugin requires a patched version of gmic
 Source1: https://github.com/amyspark/gmic/archive/refs/tags/v3.2.4.1.tar.gz
+%if %{with aitools}
 # AI selection plugin, see https://github.com/Acly/krita-ai-tools
 Source2: https://github.com/Acly/krita-ai-tools/archive/refs/tags/v1.0.2.tar.gz
 Source3: https://github.com/Acly/dlimgedit/archive/refs/heads/main.tar.gz
+%endif
 Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
 #Patch0:	krita-4.4.2-OpenMandriva-fix-build-with-OpenGLES-aarch64-and-armvhnl.patch
 #endif
-Patch1: krita-5.2.2-libjxl-0.9.patch
-Patch2: https://invent.kde.org/graphics/krita/-/commit/2d71c47661d43a4e3c1ab0c27803de980bdf2bb2.patch
+Patch1: krita-5.2.3-xsimd-compile.patch
 # Fix build with SSE
 #Patch2: krita-4.4.8-sse-compile.patch
 Patch3: krita-5.0.0-fix-libatomic-linkage.patch
@@ -27,11 +32,13 @@ Patch3: krita-5.0.0-fix-libatomic-linkage.patch
 Patch5: krita-5.0.2-gmic-compile.patch
 # This is needed because discover (as of 5.27.6) barfs on tags inside <caption>
 # It should be removed if and when discover can deal with links inside caption.
-Patch6: metadata-no-links.patch
+#Patch6: metadata-no-links.patch
+%if %{with aitools}
 # Fix krita-ai-tools build...
 Patch7: krita-ai-tools-dont-download-dlimgedit.patch
 # ... and installation
 Patch8: krita-ai-tools-install-dirs.patch
+%endif
 
 #Upstream patch
 #Patch10:	4523-Support-building-with-OpenEXR-3.patch
@@ -157,7 +164,8 @@ from scratch by masters. It supports concept art, creation of comics
 and textures for rendering.
 
 %prep
-%setup -n %{name}-%{version}%{?beta:%{beta}}
+%setup -q -n %{name}-v%{version}%{?beta:%{beta}}
+%if %{with aitools}
 cd plugins
 tar xf %{S:2}
 mv krita-ai-tools-* krita-ai-tools
@@ -165,7 +173,9 @@ echo 'add_subdirectory(krita-ai-tools)' >>CMakeLists.txt
 cd krita-ai-tools
 tar xf %{S:3}
 mv dlimgedit-* dlimgedit
+sed -i -e '/fmt/d' dlimgedit/CMakeLists.txt
 cd ../..
+%endif
 %autopatch -p1
 
 %cmake_kde5 \
