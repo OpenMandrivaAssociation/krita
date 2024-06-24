@@ -29,6 +29,7 @@ Patch1: krita-5.2.3-xsimd-compile.patch
 #Patch2: krita-4.4.8-sse-compile.patch
 Patch3: krita-5.0.0-fix-libatomic-linkage.patch
 # And make it compile
+Patch4: krita-dont-hardcode-ancient-sip-abi.patch
 Patch5: krita-5.0.2-gmic-compile.patch
 # This is needed because discover (as of 5.27.6) barfs on tags inside <caption>
 # It should be removed if and when discover can deal with links inside caption.
@@ -229,7 +230,6 @@ rm -f %{buildroot}%{_bindir}/AppImageUpdateDummy
 %{_libdir}/krita-python-libs/
 %dir %{_libdir}/kritaplugins
 %{_libdir}/kritaplugins/*.so
-%{_libdir}/qt5/qml/org/krita
 %{_iconsdir}/hicolor/*x*/apps/krita.png
 %{_iconsdir}/hicolor/scalable/apps/krita.svgz
 %{_datadir}/icons/*/*/*/application-x-krita.*

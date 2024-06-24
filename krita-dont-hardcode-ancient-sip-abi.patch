@@ -1,0 +1,12 @@
+diff -up krita-v5.2.3/cmake/modules/pyproject.toml.in.omv~ krita-v5.2.3/cmake/modules/pyproject.toml.in
+--- krita-v5.2.3/cmake/modules/pyproject.toml.in.omv~	2024-06-23 23:21:49.783270319 +0200
++++ krita-v5.2.3/cmake/modules/pyproject.toml.in	2024-06-23 23:22:05.707439832 +0200
+@@ -9,7 +9,7 @@ name = "@module_name_toml@"
+ sip-module = "@sip_name@"
+ sip-include-dirs = @sip_include_dirs@
+ sip-files-dir = "@module_srcs@"
+-abi-version = "12"
++abi-version = "12.8"
+ 
+ [tool.sip.bindings.@module_name_toml@]
+ pep484-pyi = true
