@@ -9,7 +9,7 @@
 %bcond_with aitools
 
 Name: krita
-Version: 5.2.3
+Version: 5.2.5
 Release: 1
 #Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source0: https://invent.kde.org/graphics/krita/-/archive/v%{version}/krita-v%{version}.tar.bz2
@@ -188,10 +188,10 @@ cd ../..
 %ifarch %{arm} %{armx}
 export CXXFLAGS="%{optflags} -DHAS_ONLY_OPENGL_ES"
 %endif
-%ninja -C build -w dupbuild=warn
+%ninja -C build
 
 %install
-%ninja_install -C build -w dupbuild=warn
+%ninja_install -C build
 
 # Not very nice to do additional builds here, but
 # the gmic plugin requires a krita installation in
