@@ -188,10 +188,10 @@ cd ../..
 %ifarch %{arm} %{armx}
 export CXXFLAGS="%{optflags} -DHAS_ONLY_OPENGL_ES"
 %endif
-%ninja -C build -w
+%ninja -C build
 
 %install
-%ninja_install -C build -w
+%ninja_install -C build
 
 # Not very nice to do additional builds here, but
 # the gmic plugin requires a krita installation in
