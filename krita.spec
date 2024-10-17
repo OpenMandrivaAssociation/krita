@@ -45,7 +45,7 @@ Patch8: krita-ai-tools-install-dirs.patch
 #Patch10:	4523-Support-building-with-OpenEXR-3.patch
 
 Summary: Sketching and painting program
-URL: http://krita.org/
+URL: https://krita.org/
 License: GPL
 Group: Graphics
 BuildRequires: cmake(Qt5Multimedia)
