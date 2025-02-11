@@ -10,7 +10,7 @@
 
 Name: krita
 Version: 5.2.9
-Release: 1
+Release: 2
 #Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source0: https://invent.kde.org/graphics/krita/-/archive/v%{version}/krita-v%{version}.tar.bz2
 # The krita plugin requires a patched version of gmic
@@ -43,6 +43,7 @@ Patch7: krita-ai-tools-dont-download-dlimgedit.patch
 # ... and installation
 Patch8: krita-ai-tools-install-dirs.patch
 %endif
+Patch9: krita-5.2.9-open-avif-through-qimageio.patch
 
 #Upstream patch
 #Patch10:	4523-Support-building-with-OpenEXR-3.patch
