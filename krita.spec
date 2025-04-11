@@ -17,7 +17,7 @@ Source0: https://invent.kde.org/graphics/krita/-/archive/v%{version}/krita-v%{ve
 # git repo: https://github.com/amyspark/gmic
 # Make sure the version (and filename!) always matches what's requested in
 # 3rdparty_plugins/ext_gmic/CMakeLists.txt
-Source1: https://files.kde.org/krita/build/dependencies/gmic-3.2.4.1-patched.tar.gz
+Source1: https://files.kde.org/krita/build/dependencies/gmic-3.5.0.1-patched.tar.gz
 %if %{with aitools}
 # AI selection plugin, see https://github.com/Acly/krita-ai-tools
 Source2: https://github.com/Acly/krita-ai-tools/archive/refs/tags/v1.0.2.tar.gz
