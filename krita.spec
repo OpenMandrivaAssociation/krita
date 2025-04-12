@@ -87,7 +87,7 @@ BuildRequires: pkgconfig(libwebp)
 # FIXME figure out why -- doesn't look like anything is
 # actually insane enough to link libjpeg statically
 BuildRequires: jpeg-static-devel
-BuildRequires: cmake(QuaZip-Qt6)
+BuildRequires: cmake(QuaZip-Qt5)
 # x86 package
 %ifarch %{ix86} %{x86_64}
 BuildRequires: cmake(Vc)
@@ -125,7 +125,7 @@ BuildRequires: pkgconfig(shared-mime-info)
 %ifnarch %{armx}
 BuildRequires: pkgconfig(OpenColorIO) >= 2
 %endif
-BuildRequires: pkgconfig(poppler-qt6)
+BuildRequires: pkgconfig(poppler-qt5)
 BuildRequires: pkgconfig(xcb-util)
 BuildRequires: pkgconfig(zlib)
 BuildRequires: pkgconfig(libmypaint)
@@ -136,17 +136,17 @@ BuildRequires: atomic-devel
 BuildRequires: pkgconfig(OpenEXR) >= 3.0.0
 BuildRequires: pkgconfig(gsl)
 BuildRequires: giflib-devel
-BuildRequires: python-qt6-devel
-BuildRequires: python-qt6-core
-BuildRequires: python-qt6-gui
-BuildRequires: python-qt6-widgets
-BuildRequires: python-qt6-xml
+BuildRequires: python-qt5-devel
+BuildRequires: python-qt5-core
+BuildRequires: python-qt5-gui
+BuildRequires: python-qt5-widgets
+BuildRequires: python-qt5-xml
 BuildRequires: python-sip
-Requires: qt6-qtbase-sql-sqlite
-Requires: python-qt6-core
-Requires: python-qt6-gui
-Requires: python-qt6-widgets
-Requires: python-qt6-xml
+Requires: qt5-database-plugin-sqlite
+Requires: python-qt5-core
+Requires: python-qt5-gui
+Requires: python-qt5-widgets
+Requires: python-qt5-xml
 
 # Those used to be separate libpackages in 2.x, but it didn't make much
 # sense, nothing outside of krita uses those libraries (and nothing can,
@@ -183,7 +183,7 @@ cd ../..
 %endif
 %autopatch -p1
 
-%cmake \
+%cmake_kde5 \
 	-DUSE_QT_XCB:BOOL=TRUE \
 	-DENABLE_BSYMBOLICFUNCTIONS:BOOL=TRUE \
 	-G Ninja
