@@ -186,6 +186,7 @@ cd ../..
 %cmake_kde5 \
 	-DUSE_QT_XCB:BOOL=TRUE \
 	-DENABLE_BSYMBOLICFUNCTIONS:BOOL=TRUE \
+	-DPC_xsimd_CONFIG_DIR=%{_libdir}/cmake/xsimd \
 	-G Ninja
 
 %build
