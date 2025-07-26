@@ -1,4 +1,5 @@
 %define _python_bytecompile_errors_terminate_build 0
+%define git 20250726
 
 %define stable %([ -n "%{?beta:%{beta}}" ] && echo -n un; echo -n stable)
 # See rpmlintrc for reason
@@ -9,15 +10,15 @@
 %bcond_with aitools
 
 Name: krita
-Version: 5.2.9
-Release: 4
+Version: 6.0.0%{?git:~%{git}}
+Release: 1
 #Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
-Source0: https://invent.kde.org/graphics/krita/-/archive/v%{version}/krita-v%{version}.tar.bz2
+Source0: https://invent.kde.org/graphics/krita/-/archive/%{?git:master/krita-master}%{!?git:v%{version}/krita-v%{version}}.tar.bz2%{?git:#/%{name}-%{git}.tar.gz}
 # The krita plugin requires a patched version of gmic
 # git repo: https://github.com/amyspark/gmic
 # Make sure the version (and filename!) always matches what's requested in
 # 3rdparty_plugins/ext_gmic/CMakeLists.txt
-Source1: https://files.kde.org/krita/build/dependencies/gmic-3.5.0.1-patched.tar.gz
+Source1: https://files.kde.org/krita/build/dependencies/gmic-3.5.3.0.tar.gz
 %if %{with aitools}
 # AI selection plugin, see https://github.com/Acly/krita-ai-tools
 Source2: https://github.com/Acly/krita-ai-tools/archive/refs/tags/v1.0.2.tar.gz
@@ -27,12 +28,12 @@ Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
 #Patch0:	krita-4.4.2-OpenMandriva-fix-build-with-OpenGLES-aarch64-and-armvhnl.patch
 #endif
-Patch1: krita-5.2.3-xsimd-compile.patch
+#Patch1: krita-5.2.3-xsimd-compile.patch
 # Fix build with SSE
 #Patch2: krita-4.4.8-sse-compile.patch
 Patch3: krita-5.0.0-fix-libatomic-linkage.patch
 # And make it compile
-Patch4: krita-dont-hardcode-ancient-sip-abi.patch
+#Patch4: krita-dont-hardcode-ancient-sip-abi.patch
 Patch5: krita-5.0.2-gmic-compile.patch
 # This is needed because discover (as of 5.27.6) barfs on tags inside <caption>
 # It should be removed if and when discover can deal with links inside caption.
@@ -52,35 +53,33 @@ Summary: Sketching and painting program
 URL: https://krita.org/
 License: GPL
 Group: Graphics
-BuildRequires: cmake(Qt5Multimedia)
-BuildRequires: cmake(Qt5Concurrent)
-BuildRequires: cmake(Qt5Core)
-BuildRequires: cmake(Qt5DBus)
-BuildRequires: cmake(Qt5Gui)
-BuildRequires: cmake(Qt5Network)
-BuildRequires: cmake(Qt5PrintSupport)
-BuildRequires: cmake(Qt5Quick)
-BuildRequires: cmake(Qt5Svg)
-BuildRequires: cmake(Qt5Sql)
-BuildRequires: cmake(Qt5Test)
-BuildRequires: cmake(Qt5QuickWidgets)
-BuildRequires: cmake(Qt5Widgets)
-BuildRequires: cmake(Qt5X11Extras)
-BuildRequires: cmake(Qt5LinguistTools)
+BuildRequires: cmake(Qt6Multimedia)
+BuildRequires: cmake(Qt6Concurrent)
+BuildRequires: cmake(Qt6Core)
+BuildRequires: cmake(Qt6DBus)
+BuildRequires: cmake(Qt6Gui)
+BuildRequires: cmake(Qt6Network)
+BuildRequires: cmake(Qt6PrintSupport)
+BuildRequires: cmake(Qt6Quick)
+BuildRequires: cmake(Qt6Svg)
+BuildRequires: cmake(Qt6Sql)
+BuildRequires: cmake(Qt6Test)
+BuildRequires: cmake(Qt6QuickWidgets)
+BuildRequires: cmake(Qt6Widgets)
+BuildRequires: cmake(Qt6LinguistTools)
 BuildRequires: cmake(ECM)
-BuildRequires: cmake(KF5Archive)
-BuildRequires: cmake(KF5Config)
-BuildRequires: cmake(KF5WidgetsAddons)
-BuildRequires: cmake(KF5Completion)
-BuildRequires: cmake(KF5CoreAddons)
-BuildRequires: cmake(KF5GuiAddons)
-BuildRequires: cmake(KF5I18n)
-BuildRequires: cmake(KF5ItemModels)
-BuildRequires: cmake(KF5ItemViews)
-BuildRequires: cmake(KF5WindowSystem)
-BuildRequires: cmake(KF5KIO)
-BuildRequires: cmake(KF5Crash)
-BuildRequires: cmake(KF5KDcraw)
+BuildRequires: cmake(KF6Archive)
+BuildRequires: cmake(KF6Config)
+BuildRequires: cmake(KF6WidgetsAddons)
+BuildRequires: cmake(KF6Completion)
+BuildRequires: cmake(KF6CoreAddons)
+BuildRequires: cmake(KF6GuiAddons)
+BuildRequires: cmake(KF6I18n)
+BuildRequires: cmake(KF6ItemModels)
+BuildRequires: cmake(KF6ItemViews)
+BuildRequires: cmake(KF6WindowSystem)
+BuildRequires: cmake(KF6KIO)
+BuildRequires: cmake(KF6Crash)
 BuildRequires: cmake(Mlt7)
 BuildRequires: cmake(SDL2)
 BuildRequires: pkgconfig(libwebp)
@@ -88,7 +87,7 @@ BuildRequires: pkgconfig(libwebp)
 # FIXME figure out why -- doesn't look like anything is
 # actually insane enough to link libjpeg statically
 BuildRequires: jpeg-static-devel
-BuildRequires: cmake(QuaZip-Qt5)
+BuildRequires: cmake(QuaZip-Qt6)
 # x86 package
 %ifarch %{ix86} %{x86_64}
 BuildRequires: cmake(Vc)
@@ -126,7 +125,7 @@ BuildRequires: pkgconfig(shared-mime-info)
 %ifnarch %{armx}
 BuildRequires: pkgconfig(OpenColorIO) >= 2
 %endif
-BuildRequires: pkgconfig(poppler-qt5)
+BuildRequires: pkgconfig(poppler-qt6)
 BuildRequires: pkgconfig(xcb-util)
 BuildRequires: pkgconfig(zlib)
 BuildRequires: pkgconfig(libmypaint)
@@ -137,17 +136,17 @@ BuildRequires: atomic-devel
 BuildRequires: pkgconfig(OpenEXR) >= 3.0.0
 BuildRequires: pkgconfig(gsl)
 BuildRequires: giflib-devel
-BuildRequires: python-qt5-devel
-BuildRequires: python-qt5-core
-BuildRequires: python-qt5-gui
-BuildRequires: python-qt5-widgets
-BuildRequires: python-qt5-xml
+BuildRequires: python-qt6-devel
+BuildRequires: python-qt6-core
+BuildRequires: python-qt6-gui
+BuildRequires: python-qt6-widgets
+BuildRequires: python-qt6-xml
 BuildRequires: python-sip
-Requires: qt5-database-plugin-sqlite
-Requires: python-qt5-core
-Requires: python-qt5-gui
-Requires: python-qt5-widgets
-Requires: python-qt5-xml
+Requires: qt6-qtbase-sql-sqlite
+Requires: python-qt6-core
+Requires: python-qt6-gui
+Requires: python-qt6-widgets
+Requires: python-qt6-xml
 
 # Those used to be separate libpackages in 2.x, but it didn't make much
 # sense, nothing outside of krita uses those libraries (and nothing can,
@@ -170,7 +169,7 @@ from scratch by masters. It supports concept art, creation of comics
 and textures for rendering.
 
 %prep
-%setup -q -n %{name}-v%{version}%{?beta:%{beta}}
+%setup -q -n %{name}-%{?git:master}%{!?git:v%{version}%{?beta:%{beta}}}
 %if %{with aitools}
 cd plugins
 tar xf %{S:2}
@@ -184,17 +183,16 @@ cd ../..
 %endif
 %autopatch -p1
 
-%cmake_kde5 \
+%cmake \
+	-DBUILD_WITH_QT6:BOOL=ON \
+	-DKDE_INSTALL_USE_QT_SYS_PATHS:BOOL=ON \
 	-DUSE_QT_XCB:BOOL=TRUE \
 	-DENABLE_BSYMBOLICFUNCTIONS:BOOL=TRUE \
 	-DPC_xsimd_CONFIG_DIR=%{_libdir}/cmake/xsimd \
 	-G Ninja
 
 %build
-%ifarch %{arm} %{armx}
-export CXXFLAGS="%{optflags} -DHAS_ONLY_OPENGL_ES"
-%endif
-%ninja -C build
+%ninja_build -C build
 
 %install
 %ninja_install -C build
@@ -205,6 +203,7 @@ export CXXFLAGS="%{optflags} -DHAS_ONLY_OPENGL_ES"
 mkdir build-plugins
 cd build-plugins
 cmake \
+	-DBUILD_WITH_QT6:BOOL=ON \
 	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
 	-DCMAKE_INSTALL_LIBDIR=%{_lib} \
 	-DKDE_INSTALL_USE_QT_SYS_PATHS:BOOL=TRUE \
@@ -226,7 +225,6 @@ rm -f %{buildroot}%{_bindir}/AppImageUpdateDummy
 %find_lang krita || touch krita.lang
 
 %files -f krita.lang
-%config %{_sysconfdir}/xdg/kritarc
 %{_bindir}/krita
 %{_bindir}/kritarunner
 %{_bindir}/krita_version
@@ -244,3 +242,4 @@ rm -f %{buildroot}%{_bindir}/AppImageUpdateDummy
 %{_datadir}/color/icc/krita
 %{_datadir}/color-schemes/Krita*.colors
 %{_datadir}/gmic
+%{_qtdir}/qml/org/krita/components
