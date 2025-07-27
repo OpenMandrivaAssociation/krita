@@ -158,6 +158,7 @@ BuildRequires:	cmake(Qt5Core)
 BuildRequires:	cmake(Qt5Gui)
 BuildRequires:	cmake(Qt5Widgets)
 BuildRequires:	cmake(Qt5Network)
+BuildRequires:	cmake(Qt5LinguistTools)
 
 # Those used to be separate libpackages in 2.x, but it didn't make much
 # sense, nothing outside of krita uses those libraries (and nothing can,
