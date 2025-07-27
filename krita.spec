@@ -56,6 +56,7 @@ Group: Graphics
 BuildRequires: cmake(Qt6Multimedia)
 BuildRequires: cmake(Qt6Concurrent)
 BuildRequires: cmake(Qt6Core)
+BuildRequires: cmake(Qt6Core5Compat)
 BuildRequires: cmake(Qt6DBus)
 BuildRequires: cmake(Qt6Gui)
 BuildRequires: cmake(Qt6Network)
