@@ -1,5 +1,5 @@
 %define _python_bytecompile_errors_terminate_build 0
-%define git 20250726
+%define git 20250920
 
 %define stable %([ -n "%{?beta:%{beta}}" ] && echo -n un; echo -n stable)
 # See rpmlintrc for reason
@@ -46,8 +46,9 @@ Patch8: krita-ai-tools-install-dirs.patch
 %endif
 Patch9: krita-5.2.9-open-avif-through-qimageio.patch
 
-#Upstream patch
-#Patch10:	4523-Support-building-with-OpenEXR-3.patch
+Patch10:	krita-6.0-rip-boost_system.patch
+Patch11:	krita-6.0-qt-6.10.patch
+Patch12:	krita-6.0-fix-underlinking.patch
 
 Summary: Sketching and painting program
 URL: https://krita.org/
@@ -103,6 +104,7 @@ BuildRequires: %mklibname -d zug
 BuildRequires: %mklibname -d lager
 BuildRequires: cmake(xsimd)
 BuildRequires: boost-devel
+BuildRequires: boost-system-devel
 BuildRequires: pkgconfig(libunibreak)
 BuildRequires: %{_lib}atomic-devel
 BuildRequires: pkgconfig(python)

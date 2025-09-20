@@ -1,0 +1,12 @@
+diff -up krita-master/CMakeLists.txt.omv~ krita-master/CMakeLists.txt
+--- krita-master/CMakeLists.txt.omv~	2025-09-20 01:28:55.462593548 +0200
++++ krita-master/CMakeLists.txt	2025-09-20 01:29:27.986415150 +0200
+@@ -1022,7 +1022,7 @@ if (MINGW AND CMAKE_CXX_COMPILER_ID STRE
+     set(Boost_COMPILER "mgw${KRITA_boost_COMPILER_VERSION}")
+ endif()
+ 
+-find_package(Boost 1.65 REQUIRED COMPONENTS system)
++find_package(Boost 1.65 REQUIRED)
+ set_package_properties(Boost PROPERTIES
+     DESCRIPTION "Boost provides free peer-reviewed portable C++ source libraries."
+     URL "https://www.boost.org"

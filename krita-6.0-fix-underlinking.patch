@@ -1,0 +1,11 @@
+diff -up krita-master/plugins/platforms/wayland/CMakeLists.txt.omv~ krita-master/plugins/platforms/wayland/CMakeLists.txt
+--- krita-master/plugins/platforms/wayland/CMakeLists.txt.omv~	2025-09-20 17:31:27.971563037 +0200
++++ krita-master/plugins/platforms/wayland/CMakeLists.txt	2025-09-20 17:31:36.186475072 +0200
+@@ -90,6 +90,7 @@ target_link_libraries(kritaplatformplugi
+         Qt::WaylandClient
+         kritaglobal
+         kritaui
++	xkbcommon
+ )
+ 
+ if (KRITA_USE_SURFACE_COLOR_MANAGEMENT_API)

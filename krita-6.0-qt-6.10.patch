@@ -1,0 +1,109 @@
+diff -up krita-master/plugins/platforms/wayland/CMakeLists.txt.omv~ krita-master/plugins/platforms/wayland/CMakeLists.txt
+--- krita-master/plugins/platforms/wayland/CMakeLists.txt.omv~	2025-09-20 01:32:16.333845750 +0200
++++ krita-master/plugins/platforms/wayland/CMakeLists.txt	2025-09-20 01:32:20.857529883 +0200
+@@ -80,7 +80,6 @@ set_source_files_properties(
+ target_link_libraries(kritaplatformpluginwayland
+     PRIVATE
+         Qt::Gui
+-        Qt::GuiPrivate
+         Qt::WaylandClient
+         kritaglobal
+         kritaui
+diff -up krita-master/benchmarks/KisAnimationRenderingBenchmark.cpp.omv~ krita-master/benchmarks/KisAnimationRenderingBenchmark.cpp
+--- krita-master/benchmarks/KisAnimationRenderingBenchmark.cpp.omv~	2025-09-20 17:26:34.514593928 +0200
++++ krita-master/benchmarks/KisAnimationRenderingBenchmark.cpp	2025-09-20 17:26:43.508341893 +0200
+@@ -7,6 +7,7 @@
+ #include "KisAnimationRenderingBenchmark.h"
+ 
+ #include <QThread>
++#include <QElapsedTimer>
+ #include <simpletest.h>
+ 
+ #include <testutil.h>
+diff -up krita-master/benchmarks/kis_painter_benchmark.cpp.omv~ krita-master/benchmarks/kis_painter_benchmark.cpp
+--- krita-master/benchmarks/kis_painter_benchmark.cpp.omv~	2025-09-20 02:59:44.898093121 +0200
++++ krita-master/benchmarks/kis_painter_benchmark.cpp	2025-09-20 02:59:57.436267336 +0200
+@@ -17,6 +17,7 @@ inline double drand48()
+ 
+ #include <QtMath>
+ #include <QImage>
++#include <QElapsedTimer>
+ #include <kis_debug.h>
+ 
+ #include "kis_painter_benchmark.h"
+diff -up krita-master/libs/flake/text/KoSvgTextShape_p.h.omv~ krita-master/libs/flake/text/KoSvgTextShape_p.h
+--- krita-master/libs/flake/text/KoSvgTextShape_p.h.omv~	2025-09-20 02:10:21.007893886 +0200
++++ krita-master/libs/flake/text/KoSvgTextShape_p.h	2025-09-20 02:11:40.025271057 +0200
+@@ -951,7 +951,7 @@ public:
+                                             QVector<KoSvgText::CharTransformation> &resolvedTransforms,
+                                             bool &inTextPath) {
+ 
+-        inTextPath = (current->textPath);
++        inTextPath = (current->textPath != nullptr);
+         auto base = current.base();
+         base--;
+         if(base != siblingEnd(base)) {
+diff -up krita-master/libs/image/tests/KisOverlayPaintDeviceWrapperTest.cpp.omv~ krita-master/libs/image/tests/KisOverlayPaintDeviceWrapperTest.cpp
+--- krita-master/libs/image/tests/KisOverlayPaintDeviceWrapperTest.cpp.omv~	2025-09-20 02:50:43.684262007 +0200
++++ krita-master/libs/image/tests/KisOverlayPaintDeviceWrapperTest.cpp	2025-09-20 02:50:58.548343374 +0200
+@@ -15,6 +15,7 @@
+ 
+ #include <kis_paint_device_debug_utils.h>
+ 
++#include <QElapsedTimer>
+ 
+ void KisOverlayPaintDeviceWrapperTest::test()
+ {
+diff -up krita-master/libs/ui/KisUndoActionsUpdateManager.h.omv~ krita-master/libs/ui/KisUndoActionsUpdateManager.h
+--- krita-master/libs/ui/KisUndoActionsUpdateManager.h.omv~	2025-09-20 03:03:14.591091127 +0200
++++ krita-master/libs/ui/KisUndoActionsUpdateManager.h	2025-09-20 03:03:22.577815652 +0200
+@@ -8,6 +8,7 @@
+ #define KISUNDOACTIONSUPDATEMANAGER_H
+ 
+ #include <QObject>
++#include <QSharedPointer>
+ #include <kis_signal_auto_connection.h>
+ 
+ class QAction;
+diff -up krita-master/libs/widgetutils/CMakeLists.txt.omv~ krita-master/libs/widgetutils/CMakeLists.txt
+--- krita-master/libs/widgetutils/CMakeLists.txt.omv~	2025-09-20 01:54:15.168422086 +0200
++++ krita-master/libs/widgetutils/CMakeLists.txt	2025-09-20 01:59:37.887747215 +0200
+@@ -4,6 +4,10 @@ configure_file(xmlgui/config-xmlgui.h.cm
+ 
+ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/config)
+ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/xmlgui)
++include_directories(/usr/lib64/qt6/include/QtCore/6.10.0)
++include_directories(/usr/lib64/qt6/include/QtCore/6.10.0/QtCore)
++include_directories(/usr/lib64/qt6/include/QtGui/6.10.0)
++include_directories(/usr/lib64/qt6/include/QtGui/6.10.0/QtGui)
+ 
+ set(kritawidgetutils_LIB_SRCS
+ 
+diff -up krita-master/plugins/platforms/wayland/CMakeLists.txt.omv~ krita-master/plugins/platforms/wayland/CMakeLists.txt
+--- krita-master/plugins/platforms/wayland/CMakeLists.txt.omv~	2025-09-20 17:24:50.761759561 +0200
++++ krita-master/plugins/platforms/wayland/CMakeLists.txt	2025-09-20 17:29:24.006971765 +0200
+@@ -11,6 +11,13 @@ project( kritaplatformpluginwayland )
+ set(CMAKE_REQUIRED_INCLUDES ${Qt6Gui_INCLUDE_DIRS} ${Qt6WaylandClient_PRIVATE_INCLUDE_DIRS} ${Qt6Gui_PRIVATE_INCLUDE_DIRS})
+ set(CMAKE_REQUIRED_LIBRARIES ${Qt6Gui_LIBRARIES} ${Qt6WaylandClient_LIBRARIES})
+ 
++include_directories(/usr/lib64/qt6/include/QtCore/6.10.0)
++include_directories(/usr/lib64/qt6/include/QtCore/6.10.0/QtCore)
++include_directories(/usr/lib64/qt6/include/QtGui/6.10.0)
++include_directories(/usr/lib64/qt6/include/QtGui/6.10.0/QtGui)
++include_directories(/usr/lib64/qt6/include/QtWaylandClient/6.10.0)
++include_directories(/usr/lib64/qt6/include/QtWaylandClient/6.10.0/QtWaylandClient)
++
+ check_cxx_source_compiles("
+ #include <QGuiApplication>
+ #include <QtWaylandClient/private/qwaylandintegration_p.h>
+diff -up krita-master/sdk/tests/stroke_testing_utils.cpp.omv~ krita-master/sdk/tests/stroke_testing_utils.cpp
+--- krita-master/sdk/tests/stroke_testing_utils.cpp.omv~	2025-09-20 17:19:31.516503054 +0200
++++ krita-master/sdk/tests/stroke_testing_utils.cpp	2025-09-20 17:19:39.699301717 +0200
+@@ -9,6 +9,7 @@
+ #include <simpletest.h>
+ 
+ #include <QDir>
++#include <QElapsedTimer>
+ #include <KoColor.h>
+ #include <KoColorSpace.h>
+ #include <KoColorSpaceRegistry.h>
