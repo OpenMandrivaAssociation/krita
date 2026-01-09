@@ -1,5 +1,5 @@
 %define _python_bytecompile_errors_terminate_build 0
-%define git 20250920
+%define git 20260109
 
 %define stable %([ -n "%{?beta:%{beta}}" ] && echo -n un; echo -n stable)
 # See rpmlintrc for reason
@@ -11,14 +11,9 @@
 
 Name: krita
 Version: 6.0.0%{?git:~%{git}}
-Release: 2
+Release: 1
 #Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
 Source0: https://invent.kde.org/graphics/krita/-/archive/%{?git:master/krita-master}%{!?git:v%{version}/krita-v%{version}}.tar.bz2%{?git:#/%{name}-%{git}.tar.gz}
-# The krita plugin requires a patched version of gmic
-# git repo: https://github.com/amyspark/gmic
-# Make sure the version (and filename!) always matches what's requested in
-# 3rdparty_plugins/ext_gmic/CMakeLists.txt
-Source1: https://files.kde.org/krita/build/dependencies/gmic-3.5.3.0.tar.gz
 %if %{with aitools}
 # AI selection plugin, see https://github.com/Acly/krita-ai-tools
 Source2: https://github.com/Acly/krita-ai-tools/archive/refs/tags/v1.0.2.tar.gz
@@ -34,7 +29,6 @@ Source1000: %{name}.rpmlintrc
 Patch3: krita-5.0.0-fix-libatomic-linkage.patch
 # And make it compile
 #Patch4: krita-dont-hardcode-ancient-sip-abi.patch
-Patch5: krita-5.0.2-gmic-compile.patch
 # This is needed because discover (as of 5.27.6) barfs on tags inside <caption>
 # It should be removed if and when discover can deal with links inside caption.
 #Patch6: metadata-no-links.patch
@@ -46,8 +40,6 @@ Patch8: krita-ai-tools-install-dirs.patch
 %endif
 Patch9: krita-5.2.9-open-avif-through-qimageio.patch
 
-Patch10:	krita-6.0-rip-boost_system.patch
-Patch11:	krita-6.0-qt-6.10.patch
 Patch12:	krita-6.0-fix-underlinking.patch
 
 Summary: Sketching and painting program
@@ -126,18 +118,11 @@ BuildRequires: pkgconfig(freetype2)
 BuildRequires: pkgconfig(fontconfig)
 BuildRequires: pkgconfig(fribidi)
 BuildRequires: pkgconfig(shared-mime-info)
-# Krita in 4.4.X is not compatibile with OpenColorIO v2.
-# Version 5.0.0 beta1 add support for compiling with OCIO v2 but still not runtime. Need wait for another beta.
-# Until then, we use compat package with OpenColorIO v1 to allow compiling current 4.4.8 Krita.
-# Please do not backport Krita or OCIO to Lx 4.2 or Rolling.
-%ifnarch %{armx}
 BuildRequires: pkgconfig(OpenColorIO) >= 2
-%endif
 BuildRequires: pkgconfig(poppler-qt6)
 BuildRequires: pkgconfig(xcb-util)
 BuildRequires: pkgconfig(zlib)
 BuildRequires: pkgconfig(libmypaint)
-# for gmic
 BuildRequires: pkgconfig(libavcodec)
 BuildRequires: atomic-devel
 # Optional -- for EXR file format support
@@ -155,13 +140,6 @@ Requires: python-qt6-core
 Requires: python-qt6-gui
 Requires: python-qt6-widgets
 Requires: python-qt6-xml
-# Cruft still used by gmic -- maybe drop?
-BuildRequires:	cmake(Qt5Core)
-BuildRequires:	cmake(Qt5Gui)
-BuildRequires:	cmake(Qt5Widgets)
-BuildRequires:	cmake(Qt5Network)
-BuildRequires:	cmake(Qt5LinguistTools)
-BuildRequires:	cmake(KF5CoreAddons)
 
 # Those used to be separate libpackages in 2.x, but it didn't make much
 # sense, nothing outside of krita uses those libraries (and nothing can,
@@ -171,8 +149,6 @@ Obsoletes: %{_lib}kritacolord < %{EVRD}
 Obsoletes: %{_lib}kritacolor14 < %{EVRD}
 Obsoletes: %{_lib}kritalibpaintop14 < %{EVRD}
 Obsoletes: %{_lib}kritaui14 < %{EVRD}
-# This used to be part of gmic, it's now part of krita
-%rename krita-plugin-gmic
 
 %define langlist af ar ast be bg br bs ca cs cy da de el en_GB eo es et eu fa fi fr fy ga gl he hi hne hr hu ia is it ja kk km ko lt lv mai mk mr ms nb nds ne nl nn oc pa pl pt pt_BR ro ru se sk sl sq sv ta tg th tr ug uk uz vi wa xh zh_CN zh_TW
 
@@ -212,24 +188,6 @@ cd ../..
 %install
 %ninja_install -C build
 
-# Not very nice to do additional builds here, but
-# the gmic plugin requires a krita installation in
-# a buildroot to locate headers etc.
-mkdir build-plugins
-cd build-plugins
-cmake \
-	-DBUILD_WITH_QT6:BOOL=ON \
-	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
-	-DCMAKE_INSTALL_LIBDIR=%{_lib} \
-	-DKDE_INSTALL_USE_QT_SYS_PATHS:BOOL=TRUE \
-	-DEXTERNALS_DOWNLOAD_DIR=%{_sourcedir} \
-	-DINSTALL_ROOT=%{buildroot}%{_prefix} \
-	-DPC_xsimd_CONFIG_DIR=%{_libdir}/cmake/xsimd \
-	-G Ninja \
-	../3rdparty_plugins
-%ninja_build
-cd -
-
 # We get those from breeze...
 rm -f %{buildroot}%{_datadir}/color-schemes/Breeze*.colors
 # Currently nothing uses Krita headers, so we don't need them
@@ -256,5 +214,4 @@ rm -f %{buildroot}%{_bindir}/AppImageUpdateDummy
 %{_datadir}/kritaplugins
 %{_datadir}/color/icc/krita
 %{_datadir}/color-schemes/Krita*.colors
-%{_datadir}/gmic
 %{_qtdir}/qml/org/krita/components
