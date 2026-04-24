@@ -1,5 +1,5 @@
 %define _python_bytecompile_errors_terminate_build 0
-%define git 20260109
+#define git 20260109
 
 %define stable %([ -n "%{?beta:%{beta}}" ] && echo -n un; echo -n stable)
 # See rpmlintrc for reason
@@ -12,8 +12,11 @@
 Name: krita
 Version: 6.0.0%{?git:~%{git}}
 Release: 1
-#Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
+%if 0%{?git:1}
 Source0: https://invent.kde.org/graphics/krita/-/archive/%{?git:master/krita-master}%{!?git:v%{version}/krita-v%{version}}.tar.bz2%{?git:#/%{name}-%{git}.tar.gz}
+%else
+Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
+%endif
 %if %{with aitools}
 # AI selection plugin, see https://github.com/Acly/krita-ai-tools
 Source2: https://github.com/Acly/krita-ai-tools/archive/refs/tags/v1.0.2.tar.gz
@@ -77,6 +80,7 @@ BuildRequires: cmake(KF6ItemViews)
 BuildRequires: cmake(KF6WindowSystem)
 BuildRequires: cmake(KF6KIO)
 BuildRequires: cmake(KF6Crash)
+BuildRequires: cmake(KDcrawQt6)
 BuildRequires: cmake(Mlt7)
 BuildRequires: cmake(SDL2)
 BuildRequires: pkgconfig(mlt-framework-7)
@@ -160,7 +164,7 @@ from scratch by masters. It supports concept art, creation of comics
 and textures for rendering.
 
 %prep
-%setup -q -n %{name}-%{?git:master}%{!?git:v%{version}%{?beta:%{beta}}}
+%setup -q -n %{name}-%{?git:master}%{!?git:%{version}%{?beta:%{beta}}}
 %if %{with aitools}
 cd plugins
 tar xf %{S:2}
@@ -176,6 +180,7 @@ cd ../..
 
 %cmake \
 	-DBUILD_WITH_QT6:BOOL=ON \
+	-DALLOW_UNSTABLE=QT6 \
 	-DKDE_INSTALL_USE_QT_SYS_PATHS:BOOL=ON \
 	-DUSE_QT_XCB:BOOL=TRUE \
 	-DENABLE_BSYMBOLICFUNCTIONS:BOOL=TRUE \
