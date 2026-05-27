@@ -10,7 +10,7 @@
 %bcond_with aitools
 
 Name: krita
-Version: 6.0.0%{?git:~%{git}}
+Version: 6.0.2%{?git:~%{git}}
 Release: 1
 %if 0%{?git:1}
 Source0: https://invent.kde.org/graphics/krita/-/archive/%{?git:master/krita-master}%{!?git:v%{version}/krita-v%{version}}.tar.bz2%{?git:#/%{name}-%{git}.tar.gz}
