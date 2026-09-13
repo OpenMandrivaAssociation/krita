@@ -1,0 +1,53 @@
+--- krita-v6.0.4/plugins/krita-vision-tools/src/VisionML.cpp	2026-06-04 21:35:05.000000000 +0200
++++ krita-v6.0.4/plugins/krita-vision-tools/src/VisionML.cpp.new	2026-09-14 01:01:15.116301584 +0200
+@@ -13,6 +13,9 @@
+ #include <QDebug>
+ #include <QDesktopServices>
+ #include <QDir>
++#include <QFile>
++#include <QFileInfo>
++#include <QStandardPaths>
+ #include <QFileSystemWatcher>
+ #include <QHBoxLayout>
+ #include <QMessageBox>
+@@ -42,10 +45,26 @@ struct Paths {
+ 
+ void initPaths()
+ {
+-    QString user = KoResourcePaths::getAppDataLocation();
+-    paths.plugin = user + "/pykrita/vision_tools/";
++    QString initPy = KoResourcePaths::findAsset("pythonscripts", "vision_tools/__init__.py");
++    if (!initPy.isEmpty()) {
++        paths.plugin = QFileInfo(initPy).absolutePath() + QLatin1Char('/');
++    } else {
++        paths.plugin = KoResourcePaths::getAppDataLocation() + "/pykrita/vision_tools/";
++    }
+     paths.lib = paths.plugin + "lib/";
+-    paths.models = paths.plugin + "models/";
++
++    QString userModels = KoResourcePaths::getAppDataLocation() + "/pykrita/vision_tools/models/";
++    if (QDir(userModels).exists()) {
++        paths.models = userModels;
++    } else {
++        QString sys = QStandardPaths::locate(QStandardPaths::GenericDataLocation,
++                                             QStringLiteral("visioncpp"),
++                                             QStandardPaths::LocateDirectory);
++        paths.models = sys.isEmpty() ? QStringLiteral("/usr/share/visioncpp") : sys;
++        if (!paths.models.endsWith(QLatin1Char('/'))) {
++            paths.models += QLatin1Char('/');
++        }
++    }
+ 
+     if (!QDir(paths.plugin).exists()) {
+         throw std::runtime_error("Plugin directory not found (expected at " + paths.plugin.toStdString() + ")");
+@@ -62,7 +81,9 @@ void loadGGMLBackend(char const *name)
+     char const *ext = "so";
+ #endif
+     QString path = QString("%1ggml-%2.%3").arg(paths.lib, name, ext);
+-    ggml_backend_load(path.toUtf8().constData());
++    if (QFile::exists(path)) {
++        ggml_backend_load(path.toUtf8().constData());
++    }
+ }
+ 
+ QString findModelPath(VisionMLTask task)

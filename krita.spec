@@ -6,21 +6,22 @@
 %define __requires_exclude 'devel.*'
 #define _disable_lto 1
 
-# Need to fix a few downloaded external dependencies first
-%bcond_with aitools
+# Vision ML tools (segment/background-removal/inpaint) via system vision.cpp
+%bcond_without visiontools
 
 Name: krita
-Version: 6.0.2%{?git:~%{git}}
-Release: 2
+Version: 6.0.4%{?git:~%{git}}
+Release: 1
 %if 0%{?git:1}
 Source0: https://invent.kde.org/graphics/krita/-/archive/%{?git:master/krita-master}%{!?git:v%{version}/krita-v%{version}}.tar.bz2%{?git:#/%{name}-%{git}.tar.gz}
 %else
-Source0: http://download.kde.org/stable/krita/%(echo %{version} |cut -d. -f1-3)/%{name}-%{version}%{?beta:%{beta}}.tar.xz
+# Official tarball is not on download.kde.org yet; use the tagged git archive.
+Source0: https://invent.kde.org/graphics/krita/-/archive/v%{version}/krita-v%{version}.tar.bz2
 %endif
-%if %{with aitools}
-# AI selection plugin, see https://github.com/Acly/krita-ai-tools
-Source2: https://github.com/Acly/krita-ai-tools/archive/refs/tags/v1.0.2.tar.gz
-Source3: https://github.com/Acly/dlimgedit/archive/refs/heads/main.tar.gz
+%if %{with visiontools}
+# Successor of krita-ai-tools; native plugin loaded via a small Python wrapper
+Source2: https://github.com/Acly/krita-vision-tools/archive/refs/tags/v3.0.0.tar.gz#/krita-vision-tools-3.0.0.tar.gz
+Source9: krita-vision-tools.kritarc
 %endif
 Source1000: %{name}.rpmlintrc
 #ifarch %{arm} %{armx}
@@ -35,11 +36,11 @@ Patch3: krita-5.0.0-fix-libatomic-linkage.patch
 # This is needed because discover (as of 5.27.6) barfs on tags inside <caption>
 # It should be removed if and when discover can deal with links inside caption.
 #Patch6: metadata-no-links.patch
-%if %{with aitools}
-# Fix krita-ai-tools build...
-Patch7: krita-ai-tools-dont-download-dlimgedit.patch
-# ... and installation
-Patch8: krita-ai-tools-install-dirs.patch
+%if %{with visiontools}
+# Use system libvisioncpp; install as a distro Python plugin
+Patch7: krita-vision-tools-offline-system-build.patch
+# Find the plugin in system pykrita and models in /usr/share/visioncpp
+Patch8: krita-vision-tools-find-system-plugin.patch
 %endif
 Patch9: krita-5.2.9-open-avif-through-qimageio.patch
 
@@ -139,6 +140,11 @@ BuildRequires: python-qt6-gui
 BuildRequires: python-qt6-widgets
 BuildRequires: python-qt6-xml
 BuildRequires: python-sip
+%if %{with visiontools}
+BuildRequires: cmake(visioncpp)
+# Plugin is a subpackage so a plain krita install need not pull ~160 MB of ML bits
+Recommends: %{name}-vision-tools
+%endif
 Requires: qt6-qtbase-sql-sqlite
 Requires: python-qt6-core
 Requires: python-qt6-gui
@@ -163,18 +169,32 @@ Krita offers an end–to–end solution for creating digital painting files
 from scratch by masters. It supports concept art, creation of comics
 and textures for rendering.
 
+%if %{with visiontools}
+%package vision-tools
+Summary:	ML selection, background-removal and inpaint tools for Krita
+Group:		Graphics
+Requires:	%{name} = %{EVRD}
+Requires:	%mklibname visioncpp
+Recommends:	vision.cpp-models
+
+%description vision-tools
+Krita Vision Tools (krita-vision-tools) — click-to-select, box select,
+background removal and smart patch. Built inside the Krita tree (it uses
+private Krita headers and cmake macros, so it is not a standalone package).
+
+Needs libvisioncpp. Default GGUF weights come from vision.cpp-models
+(~120 MB); you can omit that package and drop your own .gguf files into
+%{_datadir}/visioncpp/ or ~/.local/share/krita/pykrita/vision_tools/models/.
+%endif
+
 %prep
-%setup -q -n %{name}-%{?git:master}%{!?git:%{version}%{?beta:%{beta}}}
-%if %{with aitools}
+%setup -q -n %{name}-%{?git:master}%{!?git:v%{version}%{?beta:%{beta}}}
+%if %{with visiontools}
 cd plugins
 tar xf %{S:2}
-mv krita-ai-tools-* krita-ai-tools
-echo 'add_subdirectory(krita-ai-tools)' >>CMakeLists.txt
-cd krita-ai-tools
-tar xf %{S:3}
-mv dlimgedit-* dlimgedit
-sed -i -e '/fmt/d' dlimgedit/CMakeLists.txt
-cd ../..
+mv krita-vision-tools-* krita-vision-tools
+echo 'add_subdirectory(krita-vision-tools)' >>CMakeLists.txt
+cd ../
 %endif
 %autopatch -p1
 
@@ -199,6 +219,10 @@ rm -f %{buildroot}%{_datadir}/color-schemes/Breeze*.colors
 rm -rf %{buildroot}%{_includedir}
 # This isn't an AppImage, so we don't need the update dummy
 rm -f %{buildroot}%{_bindir}/AppImageUpdateDummy
+%if %{with visiontools}
+# Enable the vision-tools Python loader by default (user kritarc still wins)
+install -D -m 644 %{S:9} %{buildroot}%{_sysconfdir}/xdg/kritarc
+%endif
 
 %find_lang krita || touch krita.lang
 
@@ -220,3 +244,12 @@ rm -f %{buildroot}%{_bindir}/AppImageUpdateDummy
 %{_datadir}/color/icc/krita
 %{_datadir}/color-schemes/Krita*.colors
 %{_qtdir}/qml/org/krita/components
+%if %{with visiontools}
+%exclude %{_datadir}/krita/pykrita/vision_tools
+%exclude %{_datadir}/krita/pykrita/vision_tools.desktop
+
+%files vision-tools
+%{_datadir}/krita/pykrita/vision_tools.desktop
+%{_datadir}/krita/pykrita/vision_tools/
+%config(noreplace) %{_sysconfdir}/xdg/kritarc
+%endif
