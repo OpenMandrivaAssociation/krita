@@ -45,6 +45,8 @@ Patch8: krita-vision-tools-find-system-plugin.patch
 Patch9: krita-5.2.9-open-avif-through-qimageio.patch
 
 Patch12:	krita-6.0-fix-underlinking.patch
+# Qt 6.12 removed QTEST_DISABLE_KEYPAD_NAVIGATION with keypad navigation.
+Patch13:	krita-6.0.4-qt612-no-keypad-navigation.patch
 
 Summary: Sketching and painting program
 URL: https://krita.org/
