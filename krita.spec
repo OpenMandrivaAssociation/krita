@@ -11,7 +11,7 @@
 
 Name: krita
 Version: 6.0.4%{?git:~%{git}}
-Release: 2
+Release: 3
 %if 0%{?git:1}
 Source0: https://invent.kde.org/graphics/krita/-/archive/%{?git:master/krita-master}%{!?git:v%{version}/krita-v%{version}}.tar.bz2%{?git:#/%{name}-%{git}.tar.gz}
 %else
@@ -108,7 +108,7 @@ BuildRequires: boost-devel
 BuildRequires: boost-system-devel
 BuildRequires: pkgconfig(libunibreak)
 BuildRequires: %{_lib}atomic-devel
-BuildRequires: pkgconfig(python)
+BuildRequires: pkgconfig(python3)
 BuildRequires: pkgconfig(eigen3)
 BuildRequires: pkgconfig(exiv2)
 BuildRequires: pkgconfig(fftw3)
